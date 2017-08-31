@@ -1,0 +1,24 @@
+{
+  "name": "ternion",
+  "version": "0.1.1",
+  "description": "A socket.io framework that does the job for you.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/michael-kamel/ternion.git"
+  },
+  "keywords": [
+    "npm",
+    "socket.io",
+    "framework"
+  ],
+  "author": "Michael Kamel",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/michael-kamel/ternion/issues"
+  },
+  "homepage": "https://github.com/michael-kamel/ternion#readme"
+}
