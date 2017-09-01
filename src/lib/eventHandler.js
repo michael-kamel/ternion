@@ -87,9 +87,9 @@ class EventHandler
     {
         await this._events[eventName].middlewares.reduce((acc, middleware) => acc.then(result => middleware.apply(middleware, args)), Promise.resolve())
     }
-    async _applyHandlers(eventName, args)
+    _applyHandlers(eventName, args)
     {
-        await Promise.all(this._events[eventName].handlers)
+        this._events[eventName].handlers.forEach(handler => handler.apply(handler, args))
     }
     async handle(eventName, ...args)
     {
@@ -105,7 +105,7 @@ class EventHandler
         let postValidationResult = await this._postValidate(eventName, args)
         if(!postValidationResult)
             return
-        await this._applyHandlers(eventName, args)
+        this._applyHandlers(eventName, args)
     }
     _initEvent(eventName)
     {
