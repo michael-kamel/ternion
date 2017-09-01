@@ -20,5 +20,9 @@
   "bugs": {
     "url": "https://github.com/michael-kamel/ternion/issues"
   },
-  "homepage": "https://github.com/michael-kamel/ternion#readme"
+  "homepage": "https://github.com/michael-kamel/ternion#readme",
+  "dependencies": {},
+  "devDependencies": {
+    "socket.io": "^2.0.3"
+  }
 }
