@@ -55,7 +55,7 @@ class HandlerBuilder
     setErrorHandler(func)
     {
         this._handler.setErrorHandler(func)
-        return this;
+        return this
     }
     registerPreValidator(...args)
     {

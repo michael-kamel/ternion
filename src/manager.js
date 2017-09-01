@@ -38,7 +38,7 @@ class Manager
                 {
                     if(self._eventSource.sockets.connected[id])
                         self._eventSource.sockets.connected[id].emit('message', {msgType:msg.msgType, msgData:msg.msgData})
-                });
+                })
             }
         })
     }
@@ -60,14 +60,14 @@ class Manager
             socket.on('message', function (data) 
             { 
                 if(!data || !data.type)
-                    return;
+                    return
                 self._emitter.emit(`${self._identifier}${namespace}`, {eventType:data.type, senderId:socket.id, data:data.data})
-            });
+            })
             socket.on('disconnect', function (reason) 
             { 
                 self._emitter.emit(`${self._identifier}${namespace}`, {eventType:'disconnect', senderId:socket.id})
-            });
-        });
+            })
+        })
     }
 }
 
