@@ -3,6 +3,7 @@ const validatorBuilder = require('./src/lib/validator')
 const emitter = require('./src/emitter')
 const handler = require('./src/handler')
 const manager = require('./src/manager')
+const handlerFactory = require('./src/factories/handlerFactory')
 
 module.exports =
 {
@@ -10,5 +11,6 @@ module.exports =
     Emitter:emitter,
     Handler:handler,
     validatorBuilder,
-    defaultBuild
+    defaultBuild,
+    handlerFactory
 }

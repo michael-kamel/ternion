@@ -22,12 +22,16 @@ function errorHandler(errs, data, response, id)
     let msg = `Validation Errors: ${errs.join('/n')}`
     response.respond('validationErrors', msg)
 }
-let defaultBuild = new Handler.Builder(errorHandler, {failFast:true, unknownActionMsg:'Unknown Action'})
-defaultBuild.patch
-({
-    respond,
-    feedback,
-    broadcast
-})
+let defaultBuild = () =>
+{
+    let build = new Handler.Builder(errorHandler, {failFast:true, unknownActionMsg:'Unknown Action'})
+    build.patch
+    ({
+        respond,
+        feedback,
+        broadcast
+    })
+    return build
+}
 
 module.exports = defaultBuild
