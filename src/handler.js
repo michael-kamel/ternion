@@ -34,7 +34,7 @@ class Handler
     }
     __patchTools(data, id)
     {
-        let response = {data, senderId:id, tools:this._tools}
+        let response = Object.assign({data, senderId:id}, this._tools)
         return response
     }
 }
