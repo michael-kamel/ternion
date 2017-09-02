@@ -1,4 +1,5 @@
 const EventHandler = require('./lib/eventHandler')
+const utils = require('./lib/utils')
 
 class Handler
 {
@@ -11,10 +12,14 @@ class Handler
         if(!identifier)
             throw new Error('No identifier provided')
         this._eventHandler = builder.getHandler()
-        this._tools = builder.getTools()
         this._emitter = emitter
         this._identifier = identifier
         this._started = false
+        this._tools = {}
+        Object.keys(builder.getTools()).map(toolName => 
+        {
+            this._tools[toolName] = utils.partial(builder.getTools()[toolName], this)
+        })
     }
     start()
     {
@@ -29,11 +34,7 @@ class Handler
     }
     __patchTools(data, id)
     {
-        let response = {}
-        response.source = this
-        response.data = data
-        response.senderId = id
-        Object.assign(response, this._tools)
+        let response = {data, senderId:id, tools:this._tools}
         return response
     }
 }
@@ -55,6 +56,11 @@ class HandlerBuilder
     setErrorHandler(func)
     {
         this._handler.setErrorHandler(func)
+        return this
+    }
+    setOpts(opts)
+    {
+        this._handler.setOpts(opts)
         return this
     }
     registerPreValidator(...args)

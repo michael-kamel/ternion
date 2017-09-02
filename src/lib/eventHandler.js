@@ -2,15 +2,21 @@ const utils = require('./utils')
 
 class EventHandler
 {
-    constructor(errorHandler, opts = {failFast:true, unknownActionMsg:'Unknown Action'})
+    constructor(errorHandler, opts)
     {
         this._events = {}
         this._errorHandler = errorHandler
-        this._opts = opts
+        this._opts = {}
+        this.setOpts(opts)
     }
     setErrorHandler(handler)
     {
         this._errorHandler = handler
+    }
+    setOpts(opts = {})
+    {
+        this._opts.failFast = opts.hasOwnProperty('failFast') ? opts.failFast : true
+        this._opts.unknownActionMsg = opts.unknownActionMsg || 'Unknown Acion'
     }
     registerPreValidator(eventName, ...validators)
     {
@@ -73,7 +79,7 @@ class EventHandler
             result = await validators.reduce(async (acc, validator) =>
             {
                 let val = await validator.apply(validator, args)
-                return val ? acc: acc.concat(validator.msg)
+                return val ? acc: (await acc).concat(validator.msg)
             }, Promise.resolve([]))
         }
         if(result.length > 0)

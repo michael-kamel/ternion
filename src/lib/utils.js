@@ -7,8 +7,15 @@ async function asyncSome(arr, func)
             break
     }
 }
-
+function partial(func, ...args)
+{
+    return function(...rest)
+    {
+        func(...args, ...rest)
+    }
+}
 module.exports = 
 {
-    asyncSome
+    asyncSome,
+    partial
 }

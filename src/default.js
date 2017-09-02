@@ -1,26 +1,24 @@
 const Handler = require('./handler')
 
-function respond(msgType = 'fail', msgData={})
+function respond(source, msgType = 'fail', msgData={})
 {
-    this.source._emitter.emit(`${this.source._identifier}-response`, {ids:[this.senderId], msgType, msgData}) 
+    source._emitter.emit(`${source._identifier}-response`, {ids:[this.senderId], msgType, msgData}) 
 }
-function feedback(eventName, data = {}, opts)
+function feedback(source, eventName, data = {}, opts = {timeout:0, id:-1})
 {
-    let timeout = opts.timeout || 0
-    let id = opts.id || -1
     setTimeout(() =>
     {
-        this.source._recieve(eventName, data, id)
-    }, timeout)
+        source._receive({eventType:eventName, data, senderId:opts.id || this.senderId})
+    }, opts.timeout)
 }
-function broadcast(msgType = 'fail', msgData={})
+function broadcast(source, msgType = 'fail', msgData={})
 {
-    this.source._emitter.emit(`${this.source._identifier}-response`, {ids:[], msgType, msgData, broadcast:true}) 
+    source._emitter.emit(`${source._identifier}-response`, {ids:[], msgType, msgData, broadcast:true}) 
 }
 function errorHandler(errs, data, response, id)
 {
     let msg = `Validation Errors: ${errs.join('/n')}`
-    response.respond('validationErrors', msg)
+    response.tools.respond('validationErrors', msg)
 }
 let defaultBuild = () =>
 {
