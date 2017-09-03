@@ -12,6 +12,10 @@ class Emitter
     {
         this._emitter.addListener(event, listener)
     }
+    removeListener(event, listener)
+    {
+        this._emitter.removeListener(event, listener)
+    }
     addListener(event, listener)
     {
         this.on(event, listener)
