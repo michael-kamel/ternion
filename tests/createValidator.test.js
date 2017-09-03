@@ -12,7 +12,7 @@ describe('Validator Creation', () =>
     {
         expect(createValidator(() => true, 'test')).toBeInstanceOf(Function)
     })
-    test('calls validator', ()=>
+    test('calls validator', () =>
     {
         const predicate = jest.fn().mockImplementation(() => {})
         const validator = createValidator(predicate, 'test')
