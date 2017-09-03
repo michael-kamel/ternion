@@ -15,7 +15,8 @@ class EventHandler
     }
     setOpts(opts = {})
     {
-        this._opts.failFast = opts.hasOwnProperty('failFast') ? opts.failFast : true
+        this._opts.preFailFast = opts.hasOwnProperty('preFailFast') ? opts.preFailFast : true
+        this._opts.postFailFast = opts.hasOwnProperty('postFailFast') ? opts.postFailFast : true
         this._opts.unknownActionMsg = opts.unknownActionMsg || 'Unknown Acion'
     }
     registerPreValidator(eventName, ...validators)
@@ -52,16 +53,16 @@ class EventHandler
     }
     _preValidate(eventName, args = [])
     {
-        return this._validate(eventName, args, this._events[eventName].preValidators)
+        return this._validate(eventName, args, this._events[eventName].preValidators, this._opts.preFailFast)
     }
     _postValidate(eventName, args = [])
     {
-        return this._validate(eventName, args, this._events[eventName].postValidators)
+        return this._validate(eventName, args, this._events[eventName].postValidators, this._opts.postFailFast)
     }
-    async _validate(eventName, args, validators)
+    async _validate(eventName, args, validators, failFast)
     {
         let result = []
-        if(this._opts.failFast)
+        if(failFast)
         {
             await utils.asyncSome(validators, async validator =>
             {
