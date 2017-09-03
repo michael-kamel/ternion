@@ -3,29 +3,30 @@ const utils = require('./lib/utils')
 
 class Handler
 {
-    constructor(builder, emitter, identifier)
+    constructor(build, emitter, identifier)
     {
-        if(!builder || !(builder instanceof HandlerBuilder))
-            throw new Error('No builder provided')
+        if(!build || !(build instanceof HandlerBuild))
+            throw new Error('No build provided')
         if(!emitter)
             throw new Error('No emitter provided')
         if(!identifier)
             throw new Error('No identifier provided')
-        this._eventHandler = builder.getHandler()
+        this._eventHandler = build.getHandler()
         this._emitter = emitter
         this._identifier = identifier
         this._started = false
         this._tools = {}
-        Object.keys(builder.getTools()).map(toolName => 
+        Object.keys(build.getTools()).map(toolName => 
         {
-            this._tools[toolName] = utils.partial(builder.getTools()[toolName], this)
+            this._tools[toolName] = utils.partial(build.getTools()[toolName], this)
         })
     }
     start()
     {
         if(this._started)
             throw new Error('Handler already started')
-        this._emitter.on(this._identifier, this._receive.bind(this))
+        let receive = this._receive.bind(this)
+        this._emitter.on(this._identifier, receive)
     }
     _receive({eventType, senderId, data = {}})
     {
@@ -38,7 +39,7 @@ class Handler
         return response
     }
 }
-class HandlerBuilder
+class HandlerBuild
 {
     constructor(errorHandler, opts)
     {
@@ -89,6 +90,9 @@ class HandlerBuilder
         return this
     }
 }
-Handler.Builder = HandlerBuilder
 
-module.exports = Handler
+module.exports = 
+{
+    Handler,
+    HandlerBuild
+}

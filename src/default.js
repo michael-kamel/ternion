@@ -22,7 +22,7 @@ function errorHandler(errs, data, response, id)
 }
 let defaultBuild = () =>
 {
-    let build = new Handler.Builder(errorHandler, {preFailFast:true, postFailFast:true, unknownActionMsg:'Unknown Action'})
+    let build = new Handler.HandlerBuild(errorHandler, {preFailFast:true, postFailFast:true, unknownActionMsg:'Unknown Action'})
     build.patch
     ({
         respond,

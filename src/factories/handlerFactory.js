@@ -12,5 +12,5 @@ module.exports.buildHandler = function(build, emitter, identifier)
     })
     if(build.errorHandler)
         cBuild.setErrorHandler(build.errorHandler)
-    return new Handler(cBuild, emitter, identifier)
+    return new Handler.Handler(cBuild, emitter, identifier)
 }
