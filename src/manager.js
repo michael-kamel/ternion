@@ -7,7 +7,7 @@ class Manager
     {
         if(!eventSource)
             throw new Error('No event source provided')
-        if(!emitter || !(emitter instanceof EventEmitter || emitter instanceof Emitter))
+        if(!emitter || !(emitter instanceof EventEmitter))
             throw new Error('No emitter provided')
         if(!identifier)
             throw new Error('No identifier provided')
