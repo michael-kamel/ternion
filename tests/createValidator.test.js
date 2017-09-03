@@ -10,7 +10,7 @@ describe('Validator Creation', () =>
     })
     test('returns function', () =>
     {
-        expect(typeof createValidator(() => true, 'test')).toBe('function')
+        expect(createValidator(() => true, 'test')).toBeInstanceOf(Function)
     })
     test('calls validator', ()=>
     {

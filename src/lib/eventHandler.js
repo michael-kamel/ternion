@@ -53,13 +53,13 @@ class EventHandler
     }
     _preValidate(eventName, args = [])
     {
-        return this._validate(eventName, args, this._events[eventName].preValidators, this._opts.preFailFast)
+        return this._validate(this._events[eventName].preValidators, args, this._opts.preFailFast)
     }
     _postValidate(eventName, args = [])
     {
-        return this._validate(eventName, args, this._events[eventName].postValidators, this._opts.postFailFast)
+        return this._validate(this._events[eventName].postValidators, args, this._opts.postFailFast)
     }
-    async _validate(eventName, args, validators, failFast)
+    async _validate(validators, args, failFast)
     {
         let result = []
         if(failFast)
