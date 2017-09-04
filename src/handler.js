@@ -7,6 +7,8 @@ class Handler
     {
         if(!build || !(build instanceof HandlerBuild))
             throw new Error('No build provided')
+        if(!build.getHandler())
+            throw new Error('Build is incomplete. A handler must be specified')
         if(!emitter)
             throw new Error('No emitter provided')
         if(!identifier)
@@ -41,9 +43,8 @@ class Handler
 }
 class HandlerBuild
 {
-    constructor(errorHandler, opts)
+    constructor()
     {
-        this._handler = new EventHandler(errorHandler, opts)
         this._tools = {}
     }
     getHandler()
@@ -54,34 +55,11 @@ class HandlerBuild
     {
         return this._tools
     }
-    setErrorHandler(func)
+    setHandler(handler)
     {
-        this._handler.setErrorHandler(func)
-        return this
-    }
-    setOpts(opts)
-    {
-        this._handler.setOpts(opts)
-        return this
-    }
-    registerPreValidator(...args)
-    {
-        this._handler.registerPreValidator.apply(this._handler, args)
-        return this
-    }
-    registerPostValidator(...args)
-    {
-        this._handler.registerPostValidator.apply(this._handler, args)
-        return this
-    }
-    registerMiddleware(...args)
-    {
-        this._handler.registerMiddleware.apply(this._handler, args)
-        return this
-    }
-    registerHandler(...args)
-    {
-        this._handler.registerHandler.apply(this._handler, args)
+        if(!(handler instanceof EventHandler))
+            throw new Error('Handler must be an event Handler')
+        this._handler = handler
         return this
     }
     patch(tools)

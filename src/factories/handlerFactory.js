@@ -1,16 +1,16 @@
-const Handler = require('../handler')
+const Handling = require('../handler')
 
 module.exports.buildHandler = function(build, emitter, identifier)
 {
     let cBuild = build.build
     Object.keys(build.events).forEach(eventName =>
     {
-        cBuild.registerPreValidator(eventName, ...build.events[eventName].preValidators)
-        cBuild.registerMiddleware(eventName, ...build.events[eventName].middlewares)
-        cBuild.registerPostValidator(eventName, ...build.events[eventName].postValidators)
-        cBuild.registerHandler(eventName, ...build.events[eventName].handlers)
+        cBuild.getHandler().registerPreValidator(eventName, ...build.events[eventName].preValidators)
+        cBuild.getHandler().registerMiddleware(eventName, ...build.events[eventName].middlewares)
+        cBuild.getHandler().registerPostValidator(eventName, ...build.events[eventName].postValidators)
+        cBuild.getHandler().registerHandler(eventName, ...build.events[eventName].handlers)
     })
     if(build.errorHandler)
-        cBuild.setErrorHandler(build.errorHandler)
-    return new Handler.Handler(cBuild, emitter, identifier)
+        cBuild.getHandler().setErrorHandler(build.errorHandler)
+    return new Handling.Handler(cBuild, emitter, identifier)
 }

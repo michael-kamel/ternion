@@ -1,4 +1,5 @@
-const Handler = require('./handler')
+const Handling = require('./handler')
+const EventHandler = require('./lib/eventHandler')
 
 function respond(source, msgType = 'fail', msgData={})
 {
@@ -22,7 +23,9 @@ function errorHandler(errs, data, response, id)
 }
 let defaultBuild = () =>
 {
-    let build = new Handler.HandlerBuild(errorHandler, {preFailFast:true, postFailFast:true, unknownActionMsg:'Unknown Action'})
+    let eventHandler = new EventHandler(errorHandler, {preFailFast:true, postFailFast:true, unknownActionMsg:'Unknown Action'})
+    let build = new Handling.HandlerBuild()
+    build.setHandler(eventHandler)
     build.patch
     ({
         respond,
