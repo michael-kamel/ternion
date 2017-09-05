@@ -97,5 +97,26 @@ describe('Handling tests', () =>
             handler._receive({eventType:'tev', senderId:1, data:'data'})
             expect(mockFn).toHaveBeenCalledWith('tev', 'data', {data:'data', senderId:1}, 1)
         })
+        test('call emitter', () =>
+        {
+            const eventHandler = new EventHandler()
+            const build = new Handling.HandlerBuild()
+            build.setHandler(eventHandler)
+            const mockFn = jest.fn()
+            const handler = new Handling.Handler(build, {on:mockFn}, 'test')
+            handler.start()
+            expect(mockFn).toHaveBeenCalledTimes(1)
+        })
+        test('handles empty data', () =>
+        {
+            const eventHandler = new EventHandler()
+            const build = new Handling.HandlerBuild()
+            build.setHandler(eventHandler)
+            const handler = new Handling.Handler(build, {}, 'test')
+            const mockFn = jest.fn()
+            handler._eventHandler.handle = mockFn
+            handler._receive({eventType:'tev', senderId:1})
+            expect(mockFn).toHaveBeenCalledWith('tev', {}, {data:{}, senderId:1}, 1)
+        })
     })
 })
