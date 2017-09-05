@@ -33,11 +33,11 @@ class Handler
     _receive({eventType, senderId, data = {}})
     {
         let response = this.__patchTools(data, senderId)
-        this._eventHandler.handle(eventType, data || {}, response, senderId)
+        this._eventHandler.handle(eventType, data, response, senderId)
     }
-    __patchTools(data, id)
+    __patchTools(data, senderId)
     {
-        let response = Object.assign({data, senderId:id}, this._tools)
+        let response = Object.assign({data, senderId}, this._tools)
         return response
     }
 }

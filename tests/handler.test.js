@@ -74,5 +74,28 @@ describe('Handling tests', () =>
             handler._started = true
             expect(() => handler.start()).toThrow()
         })
+        test('patches tools', () =>
+        {
+            const eventHandler = new EventHandler()
+            const build = new Handling.HandlerBuild()
+            build.patch({tool1:'tool1', tool2:'tool2'})
+            build.setHandler(eventHandler)
+            const handler = new Handling.Handler(build, {}, 'test')
+            let patched = handler.__patchTools('data', 1)
+            expect(patched).toMatchObject({data:'data', senderId:1})
+            expect(patched).toHaveProperty('tool1')
+            expect(patched).toHaveProperty('tool2')
+        })
+        test('calls handler on receive', () =>
+        {
+            const eventHandler = new EventHandler()
+            const build = new Handling.HandlerBuild()
+            build.setHandler(eventHandler)
+            const handler = new Handling.Handler(build, {}, 'test')
+            const mockFn = jest.fn()
+            handler._eventHandler.handle = mockFn
+            handler._receive({eventType:'tev', senderId:1, data:'data'})
+            expect(mockFn).toHaveBeenCalledWith('tev', 'data', {data:'data', senderId:1}, 1)
+        })
     })
 })
