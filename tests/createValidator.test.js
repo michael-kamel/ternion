@@ -8,6 +8,12 @@ describe('Validator Creation', () =>
         expect(validator.msg).toBeDefined()
         expect(validator.msg).toBe('test')
     })
+    test('has error', () =>
+    {
+        const validator = createValidator(() => true, new Error())
+        expect(validator.msg).toBeDefined()
+        expect(validator.msg).toBeInstanceOf(Error)
+    })
     test('returns function', () =>
     {
         expect(createValidator(() => true, 'test')).toBeInstanceOf(Function)
