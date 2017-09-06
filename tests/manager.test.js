@@ -27,7 +27,7 @@ describe('Manager tests', () =>
             expect(() => new Manager('test', new EventEmitter(), 'test')).not.toThrow()
         })
     })
-    describe('Method Tests', () =>
+    describe('Listen Tests', () =>
     {
         test('Should return on non existing message', () =>
         {
@@ -170,6 +170,77 @@ describe('Manager tests', () =>
             expect(mock1).toHaveBeenCalledTimes(1)
             expect(mock2).toHaveBeenCalledTimes(1)
             expect(mock3).not.toHaveBeenCalled()
+        })
+    })
+    describe('Namespacing tests', () =>
+    {
+        test('fails if no namespacing supported', () =>
+        {
+            const mock = jest.fn()
+            const manager = new Manager('test', new EventEmitter(), 'test')
+            manager._eventSource.of = undefined
+            manager._setupConnection = mock
+            expect(() => manager.addNamespace('test')).toThrow('The provided event source does not support namespacing')
+            expect(mock).not.toHaveBeenCalled()
+        })
+        test('fails if no namespace provided', () =>
+        {
+            const mock = jest.fn()
+            const manager = new Manager('test', new EventEmitter(), 'test')
+            manager._eventSource = {of:{}}
+            manager._setupConnection = mock
+            expect(() => manager.addNamespace()).toThrow('Invalid namespace')
+            expect(mock).not.toHaveBeenCalled()
+        })
+        test('fails if namespace is not a string', () =>
+        {
+            const mock = jest.fn()
+            const manager = new Manager('test', new EventEmitter(), 'test')
+            manager._eventSource = {of:{}}
+            manager._setupConnection = mock
+            expect(() => manager.addNamespace({})).toThrow('Invalid namespace')
+            expect(mock).not.toHaveBeenCalled()
+        })
+        test('fails if namespace is not a valid string', () =>
+        {
+            const mock = jest.fn()
+            const manager = new Manager('test', new EventEmitter(), 'test')
+            manager._eventSource = {of:{}}
+            manager._setupConnection = mock
+            expect(() => manager.addNamespace('test')).toThrow('Invalid namespace')
+            expect(mock).not.toHaveBeenCalled()
+        })
+        test('fails if namespace is too short', () =>
+        {
+            const mock = jest.fn()
+            const manager = new Manager('test', new EventEmitter(), 'test')
+            manager._eventSource = {of:{}}
+            manager._setupConnection = mock
+            expect(() => manager.addNamespace('t')).toThrow('Invalid namespace')
+            expect(mock).not.toHaveBeenCalled()
+        })
+        test('succeeds if all input valid', () =>
+        {
+            const mock = jest.fn()
+            const manager = new Manager('test', new EventEmitter(), 'test')
+            manager._eventSource = {of:{}}
+            manager._setupConnection = mock
+            expect(() => manager.addNamespace('/test')).not.toThrow()
+            expect(mock).toHaveBeenCalled()
+        })
+    })
+    describe('Starting Tests', () =>
+    {
+        test('Should start', () =>
+        {
+            const mock1 = jest.fn()
+            const mock2 = jest.fn()
+            const manager = new Manager('test', new EventEmitter(), 'test')
+            manager._setupConnection = mock1
+            manager._listen = mock2
+            manager.start()
+            expect(mock1).toHaveBeenCalledTimes(1)
+            expect(mock1).toHaveBeenCalledTimes(1)
         })
     })
 })

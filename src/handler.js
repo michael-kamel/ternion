@@ -18,6 +18,7 @@ class Handler
         this._identifier = identifier
         this._started = false
         this._tools = {}
+        this._receiver = this._receive.bind(this)
         Object.keys(build.getTools()).map(toolName => 
         {
             this._tools[toolName] = utils.partial(build.getTools()[toolName], this)
@@ -27,8 +28,11 @@ class Handler
     {
         if(this._started)
             throw new Error('Handler already started')
-        let receive = this._receive.bind(this)
-        this._emitter.on(this._identifier, receive)
+        this._emitter.on(this._identifier, this._receiver)
+    }
+    addSource(identifier)
+    {
+        this._emitter.on(identifier, this._receiver)
     }
     _receive({eventType, senderId, data = {}})
     {

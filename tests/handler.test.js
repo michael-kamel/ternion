@@ -107,6 +107,16 @@ describe('Handling tests', () =>
             handler.start()
             expect(mockFn).toHaveBeenCalledTimes(1)
         })
+        test('call emitter on new source', () =>
+        {
+            const eventHandler = new EventHandler()
+            const build = new Handling.HandlerBuild()
+            build.setHandler(eventHandler)
+            const mockFn = jest.fn()
+            const handler = new Handling.Handler(build, {on:mockFn}, 'test')
+            handler.addSource('test2')
+            expect(mockFn).toHaveBeenCalledTimes(1)
+        })
         test('handles empty data', () =>
         {
             const eventHandler = new EventHandler()

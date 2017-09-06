@@ -42,11 +42,11 @@ class Manager
             }
         })
     }
-    addNamespace(namespace)//TODO: fix
+    addNamespace(namespace)
     {
         if(!this._eventSource.of)
             throw new Error('The provided event source does not support namespacing')
-        if(!namespace || !(namespace instanceof String) || !namespace.startsWith('/') || namespace.length < 2)
+        if(!namespace || typeof namespace !== "string" || !namespace.startsWith('/') || namespace.length < 2)
             throw new Error('Invalid namespace') 
         this._setupConnection(namespace)
     }
