@@ -274,4 +274,90 @@ describe('Manager tests', () =>
             expect(mock2).toHaveBeenCalled()
         })
     })
+    describe('Connection Tests', () =>
+    {
+        it('emits on new connection', () =>
+        {
+            const smock = jest.fn()
+            const socket = 
+            {
+                id:'test',
+                on:smock
+            }
+            const esmock = jest.fn().mockImplementation((type, func) => func(socket))
+            const emock = jest.fn()
+            const manager = new Manager('test', new EventEmitter(), 'test')
+            manager._emitter = {emit:emock}
+            manager._eventSource =
+            {
+                on:esmock,
+            }
+            manager._setupConnection()
+            expect(esmock).toHaveBeenCalled()
+            expect(emock).toHaveBeenCalledWith('test', {eventType:'newclient', senderId:'test'})
+        })
+        it('does not emit on empty data', () =>
+        {
+            const data = undefined
+            const smock = jest.fn().mockImplementation((message, func) => func(data))
+            const socket = 
+            {
+                id:'test',
+                on:smock
+            }
+            const esmock = jest.fn().mockImplementation((type, func) => func(socket))
+            const emock = jest.fn()
+            const manager = new Manager('test', new EventEmitter(), 'test')
+            manager._emitter = {emit:emock}
+            manager._eventSource =
+            {
+                on:esmock,
+            }
+            manager._setupConnection()
+            expect(smock).toHaveBeenCalled()
+            expect(emock).toHaveBeenCalledTimes(2)
+        })
+        it('does not emit on empty data type', () =>
+        {
+            const data = {}
+            const smock = jest.fn().mockImplementation((message, func) => func(data))
+            const socket = 
+            {
+                id:'test',
+                on:smock
+            }
+            const esmock = jest.fn().mockImplementation((type, func) => func(socket))
+            const emock = jest.fn()
+            const manager = new Manager('test', new EventEmitter(), 'test')
+            manager._emitter = {emit:emock}
+            manager._eventSource =
+            {
+                on:esmock,
+            }
+            manager._setupConnection()
+            expect(smock).toHaveBeenCalled()
+            expect(emock).toHaveBeenCalledTimes(2)
+        })
+        it('emits on data', () =>
+        {
+            const data = {type:'ttype', data:'tdata'}
+            const smock = jest.fn().mockImplementation((message, func) => func(data))
+            const socket = 
+            {
+                id:'test',
+                on:smock
+            }
+            const esmock = jest.fn().mockImplementation((type, func) => func(socket))
+            const emock = jest.fn()
+            const manager = new Manager('test', new EventEmitter(), 'test')
+            manager._emitter = {emit:emock}
+            manager._eventSource =
+            {
+                on:esmock,
+            }
+            manager._setupConnection()
+            expect(smock).toHaveBeenCalled()
+            expect(emock).toHaveBeenCalledTimes(3)
+        })
+    })
 })
