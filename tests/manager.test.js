@@ -243,4 +243,35 @@ describe('Manager tests', () =>
             expect(mock1).toHaveBeenCalledTimes(1)
         })
     })
+    describe('Connection Tests', () =>
+    {
+        test('should choose correct interface if no namespace', () =>
+        {
+            const mock1 = jest.fn()
+            const mock2 = jest.fn()
+            const manager = new Manager('test', new EventEmitter(), 'test')
+            manager._eventSource =
+            {
+                on:mock1,
+                of:() => {return {on:mock2}}
+            }
+            manager._setupConnection()
+            expect(mock1).toHaveBeenCalled()
+            expect(mock2).not.toHaveBeenCalled()
+        })
+        test('should choose correct interface if namespace', () =>
+        {
+            const mock1 = jest.fn()
+            const mock2 = jest.fn()
+            const manager = new Manager('test', new EventEmitter(), 'test')
+            manager._eventSource =
+            {
+                on:mock1,
+                of:() => {return {on:mock2}}
+            }
+            manager._setupConnection('/test')
+            expect(mock1).not.toHaveBeenCalled()
+            expect(mock2).toHaveBeenCalled()
+        })
+    })
 })

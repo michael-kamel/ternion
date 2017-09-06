@@ -25,9 +25,10 @@
   "dependencies": {},
   "devDependencies": {
     "coveralls": "^2.13.1",
-    "jest": "^20.0.4"
+    "jest": "^20.0.4",
+    "snyk": "^1.40.2"
   },
-  "engines" : { 
-    "node" : ">=7.6.0" 
+  "engines": {
+    "node": ">=7.6.0"
   }
 }
