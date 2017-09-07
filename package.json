@@ -1,11 +1,13 @@
 {
   "name": "ternion",
-  "version": "0.4.2",
+  "version": "0.5.1",
   "description": "A socket.io framework that does the job for you.",
   "main": "index.js",
   "scripts": {
     "test": "jest",
-    "reportcoverage": "jest && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js"
+    "reportcoverage": "jest && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js",
+    "es5": "gulp es5 && gulp es5index",
+    "es6": "gulp es6 && gulp es6index"
   },
   "repository": {
     "type": "git",
@@ -24,11 +26,18 @@
   "homepage": "https://github.com/michael-kamel/ternion#readme",
   "dependencies": {},
   "devDependencies": {
+    "babel-plugin-transform-async-to-generator": "^6.24.1",
+    "babel-plugin-transform-runtime": "^6.23.0",
+    "babel-preset-env": "^1.6.0",
+    "babel-runtime": "^6.26.0",
     "coveralls": "^2.13.1",
+    "gulp": "^3.9.1",
+    "gulp-babel": "^7.0.0",
+    "gulp-replace": "^0.6.1",
     "jest": "^20.0.4",
     "snyk": "^1.40.2"
   },
   "engines": {
-    "node": ">=7.6.0"
+    "node": ">=6.0.0"
   }
 }
