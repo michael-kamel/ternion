@@ -59,9 +59,9 @@ class Manager
             self._emitter.emit(`${self._identifier}${namespace}`, {eventType:'newclient', senderId:socket.id})
             socket.on('message', function (data) 
             { 
-                if(!data || !data.type)
+                if(!data || !data.msgType)
                     return
-                self._emitter.emit(`${self._identifier}${namespace}`, {eventType:data.type, senderId:socket.id, data:data.data})
+                self._emitter.emit(`${self._identifier}${namespace}`, {eventType:data.msgType, senderId:socket.id, data:data.msgData || {}})
             })
             socket.on('disconnect', function (reason) 
             { 

@@ -21,7 +21,7 @@ class EventHandler
     }
     registerPreValidator(eventName, ...validators)
     {
-        this._initEvent(eventName)
+        this.initEvent(eventName)
         validators.forEach(validator =>
         {
             this._events[eventName].preValidators.push(validator)
@@ -29,7 +29,7 @@ class EventHandler
     }
     registerPostValidator(eventName, ...validators)
     {
-        this._initEvent(eventName)
+        this.initEvent(eventName)
         validators.forEach(validator =>
         {
             this._events[eventName].postValidators.push(validator)
@@ -37,7 +37,7 @@ class EventHandler
     }
     registerHandler(eventName, ...handlers)
     {
-        this._initEvent(eventName)
+        this.initEvent(eventName)
         handlers.forEach(handler => 
         {
             this._events[eventName].handlers.push(handler)
@@ -45,7 +45,7 @@ class EventHandler
     }
     registerMiddleware(eventName, ...middlewares)
     {
-        this._initEvent(eventName)
+        this.initEvent(eventName)
         middlewares.forEach(handler => 
         {
             this._events[eventName].middlewares.push(handler)
@@ -53,13 +53,13 @@ class EventHandler
     }
     _preValidate(eventName, args = [])
     {
-        return this._validate(this._events[eventName].preValidators, args, this._opts.preFailFast)
+        return this._validate(eventName, this._events[eventName].preValidators, args, this._opts.preFailFast)
     }
     _postValidate(eventName, args = [])
     {
-        return this._validate(this._events[eventName].postValidators, args, this._opts.postFailFast)
+        return this._validate(eventName, this._events[eventName].postValidators, args, this._opts.postFailFast)
     }
-    async _validate(validators, args, failFast)
+    async _validate(eventName, validators, args, failFast)
     {
         let result = []
         if(failFast)
@@ -85,7 +85,7 @@ class EventHandler
         }
         if(result.length > 0)
         {
-            this._errorHandler(result, ...args)
+            this._errorHandler(eventName, result, ...args)
             return false
         }
         return true
@@ -102,7 +102,7 @@ class EventHandler
     {
         if(!this._events[eventName])
         {
-            this._errorHandler([this._opts.unknownActionMsg], ...args)
+            this._errorHandler(eventName, [this._opts.unknownActionMsg], ...args)
             return
         }
         let preValidationResult = await this._preValidate(eventName, args)
@@ -114,7 +114,7 @@ class EventHandler
             return
         this._applyHandlers(eventName, args)
     }
-    _initEvent(eventName)
+    initEvent(eventName)
     {
         if(!this._events[eventName])
             this._events[eventName] = 

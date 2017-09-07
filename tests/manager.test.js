@@ -340,7 +340,7 @@ describe('Manager tests', () =>
         })
         it('emits on data', () =>
         {
-            const data = {type:'ttype', data:'tdata'}
+            const data = {msgType:'ttype', msgData:'tdata'}
             const smock = jest.fn().mockImplementation((message, func) => func(data))
             const socket = 
             {

@@ -16,9 +16,9 @@ function broadcast(source, msgType = 'fail', msgData={})
 {
     source._emitter.emit(`${source._identifier}-response`, {ids:[this.senderId], msgType, msgData, broadcast:true}) 
 }
-function errorHandler(errs, data, response, id)
+function errorHandler(eventName, errs, data, response, id)
 {
-    let msg = `Validation Errors: ${errs.join('/n')}`
+    let msg = `Validation Errors on event ${eventName}: ${errs.join('/n')}`
     response.respond('validationErrors', msg)
 }
 let defaultBuild = () =>
