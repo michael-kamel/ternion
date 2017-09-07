@@ -6,8 +6,8 @@
   "scripts": {
     "test": "jest",
     "reportcoverage": "jest && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js",
-    "es5": "gulp es5 && gulp es5index",
-    "es6": "gulp es6 && gulp es6index"
+    "es5": "gulp es5p",
+    "es6": "gulp es6p"
   },
   "repository": {
     "type": "git",
