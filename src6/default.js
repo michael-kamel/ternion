@@ -13,6 +13,7 @@ function broadcast(source, msgType = 'fail', msgData = {}) {
     source._emitter.emit(`${source._identifier}-response`, { ids: [this.senderId], msgType, msgData, broadcast: true });
 }
 function errorHandler(eventName, errs, data, response, id) {
+    if (errs instanceof Error) respond.respond('unhandlerError', errs.msg);
     let msg = `Validation Errors on event ${eventName}: ${errs.join('/n')}`;
     response.respond('validationErrors', msg);
 }
@@ -20,7 +21,7 @@ let defaultBuild = () => {
     let eventHandler = new EventHandler(errorHandler, { preFailFast: true, postFailFast: true, unknownActionMsg: 'Unknown Action' });
     let build = new Handling.HandlerBuild();
     build.setHandler(eventHandler);
-    build.patch({
+    build.patchTools({
         respond,
         feedback,
         broadcast
