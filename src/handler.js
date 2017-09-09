@@ -5,15 +5,12 @@ class Handler
 {
     constructor(build, emitter, identifier)
     {
-        if(!build || !(build instanceof HandlerBuild))
-            throw new Error('No build provided')
-        if(!build.getHandler())
-            throw new Error('Build is incomplete. A handler must be specified')
+        this.__checkBuild(build)
         if(!emitter)
             throw new Error('No emitter provided')
         if(!identifier)
             throw new Error('No identifier provided')
-        this._eventHandler = build.getHandler()
+        this._eventHandlers = [build.getHandler()]
         this._emitter = emitter
         this._identifier = identifier
         this._started = false
@@ -23,6 +20,24 @@ class Handler
         {
             this._tools[toolName] = utils.partial(build.getTools()[toolName], this)
         })
+    }
+    __checkBuild(build)
+    {
+        if(!build || !(build instanceof HandlerBuild))
+            throw new Error('No build provided')
+        if(!build.getHandler())
+            throw new Error('Build is incomplete. A handler must be specified')
+    }
+    addBuild(build, overrideTools)
+    {
+        this.__checkBuild(build)
+        Object.keys(build.getTools()).map(toolName => 
+        {
+            if(this._tools[toolName] && !overrideTools)
+                throw new Error(`Tool ${toolName} already registered`)
+            this._tools[toolName] = utils.partial(build.getTools()[toolName], this)
+        })
+        this._eventHandlers.push(build.getHandler())
     }
     start()
     {
@@ -37,7 +52,10 @@ class Handler
     _receive({eventType, senderId, data = {}})
     {
         let response = this.__patchTools(data, senderId)
-        this._eventHandler.handle(eventType, data, response, senderId)
+        this._eventHandlers.forEach(async handler =>
+        {
+            await handler.handle(eventType, data, response, senderId)
+        })
     }
     __patchTools(data, senderId)
     {

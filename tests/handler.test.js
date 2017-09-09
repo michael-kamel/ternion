@@ -93,7 +93,7 @@ describe('Handling tests', () =>
             build.setHandler(eventHandler)
             const handler = new Handling.Handler(build, {}, 'test')
             const mockFn = jest.fn()
-            handler._eventHandler.handle = mockFn
+            handler._eventHandlers[0].handle = mockFn
             handler._receive({eventType:'tev', senderId:1, data:'data'})
             expect(mockFn).toHaveBeenCalledWith('tev', 'data', {data:'data', senderId:1}, 1)
         })
@@ -124,9 +124,77 @@ describe('Handling tests', () =>
             build.setHandler(eventHandler)
             const handler = new Handling.Handler(build, {}, 'test')
             const mockFn = jest.fn()
-            handler._eventHandler.handle = mockFn
+            handler._eventHandlers[0].handle = mockFn
             handler._receive({eventType:'tev', senderId:1})
             expect(mockFn).toHaveBeenCalledWith('tev', {}, {data:{}, senderId:1}, 1)
+        })
+        test('check build fails if no build', () =>
+        {
+            const eventHandler = new EventHandler()
+            const build = new Handling.HandlerBuild()
+            build.setHandler(eventHandler)
+            const handler = new Handling.Handler(build, {}, 'test')
+            expect(() => handler.__checkBuild()).toThrow('No build provided')
+        })
+        test('check build fails if no valid build', () =>
+        {
+            const eventHandler = new EventHandler()
+            const build = new Handling.HandlerBuild()
+            build.setHandler(eventHandler)
+            const handler = new Handling.Handler(build, {}, 'test')
+            expect(() => handler.__checkBuild({})).toThrow('No build provided')
+        })
+        test('check build fails if build does not contain an event handler', () =>
+        {
+            const eventHandler = new EventHandler()
+            const build = new Handling.HandlerBuild()
+            build.setHandler(eventHandler)
+            const handler = new Handling.Handler(build, {}, 'test')
+            expect(() => handler.__checkBuild(new Handling.HandlerBuild())).toThrow('Build is incomplete. A handler must be specified')
+        })
+        test('check build passes on correct input', () =>
+        {
+            const eventHandler = new EventHandler()
+            const build = new Handling.HandlerBuild()
+            build.setHandler(eventHandler)
+            const handler = new Handling.Handler(build, {}, 'test')
+            expect(() => handler.__checkBuild((new Handling.HandlerBuild()).setHandler(new EventHandler()))).not.toThrow()
+        })
+        test('adds new build', () =>
+        {
+            const eventHandler = new EventHandler()
+            const build = new Handling.HandlerBuild()
+            const build2 = new Handling.HandlerBuild()
+            build.setHandler(eventHandler)
+            build2.setHandler(eventHandler)
+            const handler = new Handling.Handler(build, {}, 'test')
+            handler.addBuild(build2)
+            expect(handler._eventHandlers).toEqual([eventHandler, eventHandler])
+        })
+        test('does not add new build if tools overlap', () =>
+        {
+            const eventHandler = new EventHandler()
+            const build = new Handling.HandlerBuild()
+            const build2 = new Handling.HandlerBuild()
+            build.setHandler(eventHandler)
+            build2.setHandler(eventHandler)
+            build.patchTools({tool1:'1', tool2:'2'})
+            build2.patchTools({tool1:'1', tool3:'2'})
+            const handler = new Handling.Handler(build, {}, 'test')
+            expect(() => handler.addBuild(build2)).toThrow('Tool tool1 already registered')
+        })
+        test('overlaps tools if explicitly specified', () =>
+        {
+            const eventHandler = new EventHandler()
+            const build = new Handling.HandlerBuild()
+            const build2 = new Handling.HandlerBuild()
+            build.setHandler(eventHandler)
+            build2.setHandler(eventHandler)
+            build.patchTools({tool1:() => '1', tool2:() => '2'})
+            build2.patchTools({tool1:() => '3', tool4:() => '4'})
+            const handler = new Handling.Handler(build, {}, 'test')
+            expect(() => handler.addBuild(build2, true)).not.toThrow()
+            expect(handler._tools.tool1()).toBe('3')
         })
     })
 })

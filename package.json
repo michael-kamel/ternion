@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "jest",
+    "test6": "npm run es6 && jest",
     "reportcoverage": "jest && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js",
     "es5": "gulp es5p",
     "es6": "gulp es6p"

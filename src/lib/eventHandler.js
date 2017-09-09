@@ -114,7 +114,7 @@ class EventHandler
             let postValidationResult = await this._postValidate(eventName, args)
             if(!postValidationResult)
                 return
-            this._applyHandlers(eventName, args)
+            await this._applyHandlers(eventName, args)
         }
         catch(err)
         {

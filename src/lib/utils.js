@@ -11,7 +11,7 @@ function partial(func, ...args)
 {
     return function(...rest)
     {
-        func.call(this, ...args, ...rest)
+        return func.call(this, ...args, ...rest)
     }
 }
 module.exports = 

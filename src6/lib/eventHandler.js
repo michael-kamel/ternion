@@ -114,7 +114,7 @@ class EventHandler {
                 yield _this3._applyMiddlewares(eventName, args);
                 let postValidationResult = yield _this3._postValidate(eventName, args);
                 if (!postValidationResult) return;
-                _this3._applyHandlers(eventName, args);
+                yield _this3._applyHandlers(eventName, args);
             } catch (err) {
                 _this3._errorHandler(eventName, err, ...args);
             }
