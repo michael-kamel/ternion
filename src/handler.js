@@ -66,7 +66,7 @@ class HandlerBuild
         this._handler = handler
         return this
     }
-    patch(tools)
+    patchTools(tools)
     {
         Object.assign(this._tools, tools)
         return this

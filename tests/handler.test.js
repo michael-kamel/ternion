@@ -25,14 +25,14 @@ describe('Handling tests', () =>
         test('patches tools', () =>
         {
             const build = new Handling.HandlerBuild()
-            build.patch({tool1:1, tool2:2})
+            build.patchTools({tool1:1, tool2:2})
             expect(build.getTools()).toMatchObject({tool1:1, tool2:2})
         })
         test('patches extra tools', () =>
         {
             const build = new Handling.HandlerBuild()
-            build.patch({tool1:1, tool2:2})
-            build.patch({tool3:3, tool4:4})
+            build.patchTools({tool1:1, tool2:2})
+            build.patchTools({tool3:3, tool4:4})
             expect(build.getTools()).toMatchObject({tool1:1, tool2:2, tool3:3, tool4:4})
         })
     })
@@ -78,7 +78,7 @@ describe('Handling tests', () =>
         {
             const eventHandler = new EventHandler()
             const build = new Handling.HandlerBuild()
-            build.patch({tool1:'tool1', tool2:'tool2'})
+            build.patchTools({tool1:'tool1', tool2:'tool2'})
             build.setHandler(eventHandler)
             const handler = new Handling.Handler(build, {}, 'test')
             let patched = handler.__patchTools('data', 1)

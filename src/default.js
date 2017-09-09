@@ -28,7 +28,7 @@ let defaultBuild = () =>
     let eventHandler = new EventHandler(errorHandler, {preFailFast:true, postFailFast:true, unknownActionMsg:'Unknown Action'})
     let build = new Handling.HandlerBuild()
     build.setHandler(eventHandler)
-    build.patch
+    build.patchTools
     ({
         respond,
         feedback,
