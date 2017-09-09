@@ -1,4 +1,4 @@
-const createValidator = require('../src/lib/validator')
+const createValidator = require('../src6/lib/validator')
 
 describe('Validator Creation', () =>
 {

@@ -1,6 +1,6 @@
-const Manager = require('../src/manager')
+const Manager = require('../src6/manager')
 const EventEmitter = require('events')
-const Emitter = require('../src/emitter')
+const Emitter = require('../src6/emitter')
 
 describe('Manager tests', () =>
 {

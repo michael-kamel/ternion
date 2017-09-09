@@ -1,5 +1,5 @@
-const Handling = require('../src/handler')
-const EventHandler = require('../src/lib/eventHandler')
+const Handling = require('../src6/handler')
+const EventHandler = require('../src6/lib/eventHandler')
 
 describe('Handling tests', () =>
 {

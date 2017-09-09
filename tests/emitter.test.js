@@ -1,4 +1,5 @@
-const Emitter = require('../src/emitter')
+const Emitter = require('../src6/emitter')
+
 const EventEmitter = require('events')
 
 describe('Emitter Tests', () =>

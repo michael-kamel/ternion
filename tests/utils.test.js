@@ -1,4 +1,4 @@
-const utils = require('../src/lib/utils')
+const utils = require('../src6/lib/utils')
 
 describe('Utils Tests', () =>
 {

@@ -1,5 +1,5 @@
 module.exports = {
     verbose: true,
     collectCoverage: true,
-    collectCoverageFrom: ['src/**/*.js', '!src/factories/**/*', '!src/default.js']
+    collectCoverageFrom: ['src6/**/*.js', '!src6/factories/**/*', '!src6/default.js']
 }

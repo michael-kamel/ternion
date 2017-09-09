@@ -1,5 +1,5 @@
-const EventHandler = require('../src/lib/eventHandler')
-const createValidator = require('../src/lib/validator')
+const EventHandler = require('../src6/lib/eventHandler')
+const createValidator = require('../src6/lib/validator')
 
 describe('Event Handler Tests', () =>
 {
