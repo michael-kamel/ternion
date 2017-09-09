@@ -105,14 +105,21 @@ class EventHandler
             this._errorHandler(eventName, [this._opts.unknownActionMsg], ...args)
             return
         }
-        let preValidationResult = await this._preValidate(eventName, args)
-        if(!preValidationResult)
-            return
-        await this._applyMiddlewares(eventName, args)
-        let postValidationResult = await this._postValidate(eventName, args)
-        if(!postValidationResult)
-            return
-        this._applyHandlers(eventName, args)
+        try
+        {
+            let preValidationResult = await this._preValidate(eventName, args)
+            if(!preValidationResult)
+                return
+            await this._applyMiddlewares(eventName, args)
+            let postValidationResult = await this._postValidate(eventName, args)
+            if(!postValidationResult)
+                return
+            this._applyHandlers(eventName, args)
+        }
+        catch(err)
+        {
+            this._errorHandler(eventName, err, ...args)
+        }
     }
     initEvent(eventName)
     {
