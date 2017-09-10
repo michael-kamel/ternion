@@ -1,5 +1,5 @@
-const Handling = require('./handler');
-const EventHandler = require('./lib/eventHandler');
+const Handling = require('../handler');
+const EventHandler = require('../lib/eventHandler');
 
 function respond(source, msgType = 'fail', msgData = {}) {
     source._emitter.emit(`${source._identifier}-response`, { ids: [this.senderId], msgType, msgData });
@@ -28,5 +28,10 @@ let defaultBuild = () => {
     });
     return build;
 };
-
-module.exports = defaultBuild;
+let emptyBuild = () => {
+    return new Handling.HandlerBuild();
+};
+module.exports = {
+    defaultBuild,
+    emptyBuild
+};

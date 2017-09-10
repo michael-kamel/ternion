@@ -27,6 +27,12 @@ gulp.task('es5index', () => {
     .pipe(replace('src/', 'src5/'))
     .pipe(gulp.dest('./'))
 })
+gulp.task('es7index', () => {
+    gulp.src(['index.js'])
+    .pipe(replace('src6/', 'src/'))
+    .pipe(replace('src5/', 'src/'))
+    .pipe(gulp.dest('./'))
+})
 
 gulp.task('es6p', ['es6', 'es6index'])
 gulp.task('es5p', ['es5', 'es5index'])
