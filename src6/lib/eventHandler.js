@@ -16,6 +16,7 @@ class EventHandler {
         this._opts.preFailFast = opts.hasOwnProperty('preFailFast') ? opts.preFailFast : true;
         this._opts.postFailFast = opts.hasOwnProperty('postFailFast') ? opts.postFailFast : true;
         this._opts.unknownActionMsg = opts.unknownActionMsg || 'Unknown Acion';
+        this._opts.ignoreUnregisteredEvents = opts.hasOwnProperty('ignoreUnregisteredEvents') ? opts.ignoreUnregisteredEvents : true;
     }
     registerPreValidator(eventName, ...validators) {
         this.initEvent(eventName);
@@ -105,7 +106,7 @@ class EventHandler {
 
         return _asyncToGenerator(function* () {
             if (!_this3._events[eventName]) {
-                _this3._errorHandler(eventName, [_this3._opts.unknownActionMsg], ...args);
+                if (!_this3._opts.ignoreUnregisteredEvents) _this3._errorHandler(eventName, [_this3._opts.unknownActionMsg], ...args);
                 return;
             }
             try {

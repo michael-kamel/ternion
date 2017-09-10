@@ -90,7 +90,7 @@ describe('Event Handler Tests', () =>
         test('sets opts', () =>
         {
             const handler = new EventHandler()
-            const opts = {preFailFast:false, postFailFast:false, unknownActionMsg:'test'}
+            const opts = {preFailFast:false, postFailFast:false, unknownActionMsg:'test', ignoreUnregisteredEvents:false}
             handler.setOpts(opts)
             expect(handler._opts).toEqual(opts)
         })
@@ -135,10 +135,10 @@ describe('Event Handler Tests', () =>
             expect(predicate2).toHaveBeenCalledTimes(1)
             expect(predicate3).toHaveBeenCalledTimes(1)
         })
-        test('should call error handler', async () =>
+        test('should call error handler on validate if specified', async () =>
         {
             const errorHandler = jest.fn()
-            const handler = new EventHandler(errorHandler)
+            const handler = new EventHandler(errorHandler, {ignoreUnregisteredEvents:false})
             const predicate1 = jest.fn().mockImplementation(() => false)
             const predicate2 = jest.fn().mockImplementation(() => false)
             const validator1 = createValidator(predicate1, 'test1')
@@ -146,6 +146,20 @@ describe('Event Handler Tests', () =>
             await handler._validate('test', [validator1, validator2], [1,2,3], false)
             expect(errorHandler).toHaveBeenCalledTimes(1)
             expect(errorHandler).toHaveBeenCalledWith('test', ['test1', 'test2'], 1, 2, 3)
+        })
+        test('should not call error handler on unregistered event if not specified', async () =>
+        {
+            const errorHandler = jest.fn()
+            const handler = new EventHandler(errorHandler)
+            await handler.handle('test')
+            expect(errorHandler).not.toHaveBeenCalled()
+        })
+        test('should call error handler on unregistered event if specified', async () =>
+        {
+            const errorHandler = jest.fn()
+            const handler = new EventHandler(errorHandler, {ignoreUnregisteredEvents:false})
+            await handler.handle('test')
+            expect(errorHandler).toHaveBeenCalledTimes(1)
         })
         test('fails if one test fails', async () =>
         {
@@ -305,13 +319,6 @@ describe('Event Handler Tests', () =>
     })
     describe('Handling Tests', () =>
     {
-        test('does not execute non existing event', async() =>
-        {
-            const errorHandler = jest.fn()
-            const handler = new EventHandler(errorHandler)
-            await handler.handle('test')
-            expect(errorHandler).toHaveBeenCalledTimes(1)
-        })
         test('executes a valid full run', async () =>
         {
             const arr = []

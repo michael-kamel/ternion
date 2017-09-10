@@ -18,6 +18,7 @@ class EventHandler
         this._opts.preFailFast = opts.hasOwnProperty('preFailFast') ? opts.preFailFast : true
         this._opts.postFailFast = opts.hasOwnProperty('postFailFast') ? opts.postFailFast : true
         this._opts.unknownActionMsg = opts.unknownActionMsg || 'Unknown Acion'
+        this._opts.ignoreUnregisteredEvents = opts.hasOwnProperty('ignoreUnregisteredEvents') ?  opts.ignoreUnregisteredEvents : true
     }
     registerPreValidator(eventName, ...validators)
     {
@@ -102,7 +103,8 @@ class EventHandler
     {
         if(!this._events[eventName])
         {
-            this._errorHandler(eventName, [this._opts.unknownActionMsg], ...args)
+            if(!this._opts.ignoreUnregisteredEvents)
+                this._errorHandler(eventName, [this._opts.unknownActionMsg], ...args)
             return
         }
         try
