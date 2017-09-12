@@ -16,6 +16,11 @@ function broadcast(source, msgType = 'fail', msgData={})
 {
     source._emitter.emit(`${source._identifier}-response`, {ids:[this.senderId], msgType, msgData, broadcast:true}) 
 }
+function disconnect(source, ids = [this.senderId])
+{
+    source._emitter.emit(`${source._identifier}-response`, {ids, msgType:'disconnect', msgData:{}, disconnect:true}) 
+}
+
 function errorHandler(eventName, errs, data, response, id)
 {
     if(errs instanceof Error)
@@ -35,7 +40,8 @@ let defaultBuild = () =>
     ({
         respond,
         feedback,
-        broadcast
+        broadcast,
+        disconnect
     })
     return build
 }

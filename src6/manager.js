@@ -20,6 +20,10 @@ class Manager {
             if (!msg || !msg.msgType || !msg.msgData || !msg.ids) return;
             if (msg.broadcast) {
                 if (self._eventSource.sockets.connected[msg.ids[0]]) self._eventSource.sockets.connected[msg.ids[0]].broadcast.emit('message', { msgType: msg.msgType, msgData: msg.msgData });
+            } else if (msg.disconnect) {
+                msg.ids.forEach(id => {
+                    if (self._eventSource.sockets.connected[id]) self._eventSource.sockets.connected[id].disconnect();
+                });
             } else {
                 msg.ids.forEach(id => {
                     if (self._eventSource.sockets.connected[id]) self._eventSource.sockets.connected[id].emit('message', { msgType: msg.msgType, msgData: msg.msgData });

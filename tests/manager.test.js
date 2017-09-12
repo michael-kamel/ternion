@@ -141,6 +141,26 @@ describe('Manager tests', () =>
             manager._listen()
             expect(mock).toHaveBeenCalledTimes(1)
         })
+        test('Should disconnect', () =>
+        {
+            const mock = jest.fn()
+            const eventSource = {
+                sockets:{
+                    connected:{
+                        'test1': {
+                            disconnect:mock
+                        }
+                    }
+                }
+            }
+            const emitter = new EventEmitter
+            const identifier = 'test'
+            const manager = new Manager(eventSource, emitter, identifier)
+            const data = {ids:['test1', 'test2'], disconnect:true, msgType:'disconnect', msgData:{}}
+            emitter.on = (dat, func) => func(data)
+            manager._listen()
+            expect(mock).toHaveBeenCalledTimes(1)
+        })
         test('Should respond to some', () =>
         {
             const mock1 = jest.fn()

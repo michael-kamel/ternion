@@ -12,6 +12,10 @@ function feedback(source, eventName, data = {}, opts = { timeout: 0, id: -1 }) {
 function broadcast(source, msgType = 'fail', msgData = {}) {
     source._emitter.emit(`${source._identifier}-response`, { ids: [this.senderId], msgType, msgData, broadcast: true });
 }
+function disconnect(source, ids = [this.senderId]) {
+    source._emitter.emit(`${source._identifier}-response`, { ids, msgType: 'disconnect', msgData: {}, disconnect: true });
+}
+
 function errorHandler(eventName, errs, data, response, id) {
     if (errs instanceof Error) response.respond('unhandlerError', errs.msg);else {
         let msg = `Validation Errors on event ${eventName}: ${errs.join('/n')}`;
@@ -25,7 +29,8 @@ let defaultBuild = () => {
     build.patchTools({
         respond,
         feedback,
-        broadcast
+        broadcast,
+        disconnect
     });
     return build;
 };
