@@ -19,9 +19,12 @@ function broadcast(source, msgType = 'fail', msgData={})
 function errorHandler(eventName, errs, data, response, id)
 {
     if(errs instanceof Error)
-        respond.respond('unhandlerError', errs.msg)
-    let msg = `Validation Errors on event ${eventName}: ${errs.join('/n')}`
-    response.respond('validationErrors', msg)
+        response.respond('unhandlerError', errs.msg)
+    else
+    {
+        let msg = `Validation Errors on event ${eventName}: ${errs.join('/n')}`
+        response.respond('validationErrors', msg)
+    }
 }
 let defaultBuild = () =>
 {
