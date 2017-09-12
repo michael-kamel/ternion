@@ -3,6 +3,8 @@ const Build = require('../handler').HandlerBuild;
 const EventHandler = require('../lib/eventHandler');
 const Manager = require('../manager');
 const Emitter = require('../emitter');
+const buildValidator = require('../lib/validator');
+
 function constructBuild({ buildSpec, errorHandler, tools, opts }) {
     let base = new Build();
     let handler = new EventHandler(errorHandler, opts);
@@ -56,5 +58,6 @@ module.exports = {
     constructHandler,
     constructEventHandler,
     constructManager,
-    constructEmitter
+    constructEmitter,
+    buildValidator
 };
