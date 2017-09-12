@@ -1,8 +1,8 @@
 const Handling = require('../handler');
 const EventHandler = require('../lib/eventHandler');
 
-function respond(source, msgType = 'fail', msgData = {}) {
-    source._emitter.emit(`${source._identifier}-response`, { ids: [this.senderId], msgType, msgData });
+function respond(source, msgType = 'fail', msgData = {}, ids = [this.senderId]) {
+    source._emitter.emit(`${source._identifier}-response`, { ids, msgType, msgData });
 }
 function feedback(source, eventName, data = {}, opts = { timeout: 0, id: -1 }) {
     setTimeout(() => {
