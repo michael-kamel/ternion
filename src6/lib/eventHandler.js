@@ -81,7 +81,7 @@ class EventHandler {
                 })(), Promise.resolve([]));
             }
             if (result.length > 0) {
-                _this._errorHandler(eventName, result, ...args);
+                _this._handleErrors(eventName, result, args);
                 return false;
             }
             return true;
@@ -106,7 +106,7 @@ class EventHandler {
 
         return _asyncToGenerator(function* () {
             if (!_this3._events[eventName]) {
-                if (!_this3._opts.ignoreUnregisteredEvents) _this3._errorHandler(eventName, [_this3._opts.unknownActionMsg], ...args);
+                if (!_this3._opts.ignoreUnregisteredEvents) _this3._handleErrors(eventName, [_this3._opts.unknownActionMsg], args);
                 return;
             }
             try {
@@ -117,9 +117,12 @@ class EventHandler {
                 if (!postValidationResult) return;
                 yield _this3._applyHandlers(eventName, args);
             } catch (err) {
-                _this3._errorHandler(eventName, err, ...args);
+                _this3._handleErrors(eventName, err, args);
             }
         })();
+    }
+    _handleErrors(eventName, err, args) {
+        if (this._errorHandler) this._errorHandler(eventName, err, ...args);
     }
     initEvent(eventName) {
         if (!this._events[eventName]) this._events[eventName] = {

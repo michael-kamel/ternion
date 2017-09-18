@@ -107,8 +107,7 @@ describe('Event Handler Tests', () =>
     {
         test('should fail fast if set', async () =>
         {
-            const errorHandler = jest.fn()
-            const handler = new EventHandler(errorHandler)
+            const handler = new EventHandler()
             const predicate1 = jest.fn().mockImplementation(() => true)
             const predicate2 = jest.fn().mockImplementation(() => false)
             const predicate3 = jest.fn().mockImplementation(() => true)
@@ -122,8 +121,7 @@ describe('Event Handler Tests', () =>
         })
         test('should not fail fast if not set', async () =>
         {
-            const errorHandler = jest.fn()
-            const handler = new EventHandler(errorHandler)
+            const handler = new EventHandler()
             const predicate1 = jest.fn().mockImplementation(() => true)
             const predicate2 = jest.fn().mockImplementation(() => false)
             const predicate3 = jest.fn().mockImplementation(() => true)

@@ -86,7 +86,7 @@ class EventHandler
         }
         if(result.length > 0)
         {
-            this._errorHandler(eventName, result, ...args)
+            this._handleErrors(eventName, result, args)
             return false
         }
         return true
@@ -104,7 +104,7 @@ class EventHandler
         if(!this._events[eventName])
         {
             if(!this._opts.ignoreUnregisteredEvents)
-                this._errorHandler(eventName, [this._opts.unknownActionMsg], ...args)
+                this._handleErrors(eventName, [this._opts.unknownActionMsg], args)
             return
         }
         try
@@ -120,8 +120,13 @@ class EventHandler
         }
         catch(err)
         {
-            this._errorHandler(eventName, err, ...args)
+            this._handleErrors(eventName, err, args)
         }
+    }
+    _handleErrors(eventName, err, args)
+    {
+        if(this._errorHandler)
+            this._errorHandler(eventName, err, ...args)
     }
     initEvent(eventName)
     {
