@@ -1,5 +1,5 @@
 const Handling = require('../handler')
-const Build = require('../handler').HandlerBuild
+const Build = Handling.HandlerBuild
 const EventHandler = require('../lib/eventHandler')
 const Manager = require('../manager')
 const Emitter = require('../emitter')
