@@ -50,6 +50,11 @@ class Manager {
             });
         });
     }
+    emit(msgType, data, namespace = '') {
+        let event = { eventType: msgType };
+        Object.assign(event, data);
+        this._emitter.emit(`${this._identifier}${namespace}`, event);
+    }
 }
 
 module.exports = Manager;

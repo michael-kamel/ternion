@@ -379,5 +379,21 @@ describe('Manager tests', () =>
             expect(smock).toHaveBeenCalled()
             expect(emock).toHaveBeenCalledTimes(3)
         })
+        it('emits correct data', () =>
+        {
+            const mock = jest.fn()
+            const manager = new Manager('test', new EventEmitter(), 'test')
+            manager._emitter = {emit:mock}
+            manager.emit('testtype', {test:'test'})
+            expect(mock).toHaveBeenCalledWith('test', {eventType:'testtype', test:'test'})
+        })
+        it('emits correct data with namespace', () =>
+        {
+            const mock = jest.fn()
+            const manager = new Manager('test', new EventEmitter(), 'test')
+            manager._emitter = {emit:mock}
+            manager.emit('testtype', {test:'test'}, 'ns')
+            expect(mock).toHaveBeenCalledWith('testns', {eventType:'testtype', test:'test'})
+        })
     })
 })
