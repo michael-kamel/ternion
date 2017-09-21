@@ -317,6 +317,15 @@ describe('Event Handler Tests', () =>
     })
     describe('Handling Tests', () =>
     {
+        test('catches handler errors', async () =>
+        {
+            const errorHandler = jest.fn()
+            const handler = new EventHandler(errorHandler)
+            const handler1 = () => new Promise((resolve, reject) => { reject(new Error('testerr'))}) 
+            handler.registerHandler('testev', handler1) 
+            await handler.handle('testev')
+            expect(errorHandler).toHaveBeenCalled()
+        })
         test('executes a valid full run', async () =>
         {
             const arr = []

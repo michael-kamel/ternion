@@ -95,9 +95,9 @@ class EventHandler
     {
         await this._events[eventName].middlewares.reduce((acc, middleware) => acc.then(result => middleware.apply(middleware, args)), Promise.resolve())
     }
-    _applyHandlers(eventName, args)
+    async _applyHandlers(eventName, args)
     {
-        this._events[eventName].handlers.forEach(handler => handler.apply(handler, args))
+        await this._events[eventName].handlers.reduce((acc, handler) => acc.then(result => handler.apply(handler, args)), Promise.resolve())
     }
     async handle(eventName, ...args)
     {
