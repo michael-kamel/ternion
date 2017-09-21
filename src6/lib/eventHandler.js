@@ -99,25 +99,33 @@ class EventHandler {
         })();
     }
     _applyHandlers(eventName, args) {
-        this._events[eventName].handlers.forEach(handler => handler.apply(handler, args));
-    }
-    handle(eventName, ...args) {
         var _this3 = this;
 
         return _asyncToGenerator(function* () {
-            if (!_this3._events[eventName]) {
-                if (!_this3._opts.ignoreUnregisteredEvents) _this3._handleErrors(eventName, [_this3._opts.unknownActionMsg], args);
+            yield _this3._events[eventName].handlers.reduce(function (acc, handler) {
+                return acc.then(function (result) {
+                    return handler.apply(handler, args);
+                });
+            }, Promise.resolve());
+        })();
+    }
+    handle(eventName, ...args) {
+        var _this4 = this;
+
+        return _asyncToGenerator(function* () {
+            if (!_this4._events[eventName]) {
+                if (!_this4._opts.ignoreUnregisteredEvents) _this4._handleErrors(eventName, [_this4._opts.unknownActionMsg], args);
                 return;
             }
             try {
-                let preValidationResult = yield _this3._preValidate(eventName, args);
+                let preValidationResult = yield _this4._preValidate(eventName, args);
                 if (!preValidationResult) return;
-                yield _this3._applyMiddlewares(eventName, args);
-                let postValidationResult = yield _this3._postValidate(eventName, args);
+                yield _this4._applyMiddlewares(eventName, args);
+                let postValidationResult = yield _this4._postValidate(eventName, args);
                 if (!postValidationResult) return;
-                yield _this3._applyHandlers(eventName, args);
+                yield _this4._applyHandlers(eventName, args);
             } catch (err) {
-                _this3._handleErrors(eventName, err, args);
+                _this4._handleErrors(eventName, err, args);
             }
         })();
     }

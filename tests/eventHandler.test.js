@@ -312,7 +312,7 @@ describe('Event Handler Tests', () =>
             const handler = new EventHandler()
             handler.initEvent('tev')
             const res = handler._applyHandlers('tev')
-            expect(res).not.toBeInstanceOf(Promise)
+            expect(res).toBeInstanceOf(Promise)
         })
     })
     describe('Handling Tests', () =>
