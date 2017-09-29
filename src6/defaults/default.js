@@ -17,10 +17,12 @@ function disconnect(source, ids = [this.senderId]) {
 }
 
 function errorHandler(eventName, errs, data, response, id) {
-    if (errs instanceof Error) response.respond('unhandlerError', errs.msg);else {
-        let msg = `Validation Errors on event ${eventName}: ${errs.join('/n')}`;
-        response.respond('validationErrors', msg);
-    }
+    if (errs instanceof Array) errs.forEach(err => {
+        if (err instanceof Error) response.respond('unhandledError', err.msg);else if (err instanceof String) {
+            let msg = `Validation Errors on event ${eventName}: ${err}`;
+            response.respond('validationErrors', msg);
+        } else respond.respond('unhandledError', err);
+    });
 }
 let defaultBuild = () => {
     let eventHandler = new EventHandler(errorHandler, { preFailFast: true, postFailFast: true, unknownActionMsg: 'Unknown Action' });

@@ -125,12 +125,12 @@ class EventHandler {
                 if (!postValidationResult) return;
                 yield _this4._applyHandlers(eventName, args);
             } catch (err) {
-                _this4._handleErrors(eventName, err, args);
+                _this4._handleErrors(eventName, [err], args);
             }
         })();
     }
-    _handleErrors(eventName, err, args) {
-        if (this._errorHandler) this._errorHandler(eventName, err, ...args);
+    _handleErrors(eventName, errs, args) {
+        if (this._errorHandler) this._errorHandler(eventName, errs, ...args);
     }
     initEvent(eventName) {
         if (!this._events[eventName]) this._events[eventName] = {

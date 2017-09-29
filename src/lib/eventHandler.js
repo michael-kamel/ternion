@@ -120,13 +120,13 @@ class EventHandler
         }
         catch(err)
         {
-            this._handleErrors(eventName, err, args)
+            this._handleErrors(eventName, [err], args)
         }
     }
-    _handleErrors(eventName, err, args)
+    _handleErrors(eventName, errs, args)
     {
         if(this._errorHandler)
-            this._errorHandler(eventName, err, ...args)
+            this._errorHandler(eventName, errs, ...args)
     }
     initEvent(eventName)
     {
