@@ -34,7 +34,7 @@ function errorHandler(eventName, errs, data, response, id)
                 response.respond('validationErrors', msg)
             }
             else
-                respond.respond('unhandledError', err)
+                response.respond('unhandledError', err)
         })
 }
 let defaultBuild = () =>

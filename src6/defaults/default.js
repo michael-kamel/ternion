@@ -21,7 +21,7 @@ function errorHandler(eventName, errs, data, response, id) {
         if (err instanceof Error) response.respond('unhandledError', err.msg);else if (err instanceof String) {
             let msg = `Validation Errors on event ${eventName}: ${err}`;
             response.respond('validationErrors', msg);
-        } else respond.respond('unhandledError', err);
+        } else response.respond('unhandledError', err);
     });
 }
 let defaultBuild = () => {
