@@ -1,6 +1,7 @@
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
 
 const utils = require('./utils');
+const Errors = require('./errors');
 
 class EventHandler {
     constructor(errorHandler, opts) {
@@ -15,7 +16,7 @@ class EventHandler {
     setOpts(opts = {}) {
         this._opts.preFailFast = opts.hasOwnProperty('preFailFast') ? opts.preFailFast : true;
         this._opts.postFailFast = opts.hasOwnProperty('postFailFast') ? opts.postFailFast : true;
-        this._opts.unknownActionMsg = opts.unknownActionMsg || 'Unknown Acion';
+        this._opts.unknownActionMsg = opts.unknownActionMsg || 'Unknown Action';
         this._opts.ignoreUnregisteredEvents = opts.hasOwnProperty('ignoreUnregisteredEvents') ? opts.ignoreUnregisteredEvents : true;
     }
     registerPreValidator(eventName, ...validators) {
@@ -58,7 +59,7 @@ class EventHandler {
                     var _ref = _asyncToGenerator(function* (validator) {
                         let val = yield validator.apply(validator, args);
                         if (!val) {
-                            result = [validator.msg];
+                            result = [new Errors.ValidationError(validator.msg)];
                             return true;
                         }
                         return false;
@@ -72,7 +73,7 @@ class EventHandler {
                 result = yield validators.reduce((() => {
                     var _ref2 = _asyncToGenerator(function* (acc, validator) {
                         let val = yield validator.apply(validator, args);
-                        return val ? acc : (yield acc).concat(validator.msg);
+                        return val ? acc : (yield acc).concat(new Errors.ValidationError(validator.msg));
                     });
 
                     return function (_x2, _x3) {
@@ -114,7 +115,7 @@ class EventHandler {
 
         return _asyncToGenerator(function* () {
             if (!_this4._events[eventName]) {
-                if (!_this4._opts.ignoreUnregisteredEvents) _this4._handleErrors(eventName, [_this4._opts.unknownActionMsg], args);
+                if (!_this4._opts.ignoreUnregisteredEvents) _this4._handleErrors(eventName, [new Errors.UnknownActionError(_this4._opts.unknownActionMsg)], args);
                 return;
             }
             try {

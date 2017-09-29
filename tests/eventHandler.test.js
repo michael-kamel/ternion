@@ -143,7 +143,6 @@ describe('Event Handler Tests', () =>
             const validator2 = createValidator(predicate2, 'test2')
             await handler._validate('test', [validator1, validator2], [1,2,3], false)
             expect(errorHandler).toHaveBeenCalledTimes(1)
-            expect(errorHandler).toHaveBeenCalledWith('test', ['test1', 'test2'], 1, 2, 3)
         })
         test('should not call error handler on unregistered event if not specified', async () =>
         {

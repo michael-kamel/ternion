@@ -20,7 +20,7 @@ function constructBuild({ buildSpec, errorHandler, tools, opts }) {
 }
 function mergeBuilds({ errorHandler, opts, builds }) {
     let base = new Build();
-    let handler = new EventHandler(errorHandler || builds[0].getHandler()._errorHandler, opts);
+    let handler = new EventHandler(errorHandler || builds[0].getHandler()._errorHandler, opts || builds[builds.length - 1].getHandler()._opts);
     handler.initEvent('newclient');
     handler.initEvent('disconnect');
     patchType(handler, builds, 'preValidators');

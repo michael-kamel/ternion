@@ -1,4 +1,5 @@
 const utils = require('./utils')
+const Errors = require('./errors')
 
 class EventHandler
 {
@@ -17,8 +18,8 @@ class EventHandler
     {
         this._opts.preFailFast = opts.hasOwnProperty('preFailFast') ? opts.preFailFast : true
         this._opts.postFailFast = opts.hasOwnProperty('postFailFast') ? opts.postFailFast : true
-        this._opts.unknownActionMsg = opts.unknownActionMsg || 'Unknown Acion'
-        this._opts.ignoreUnregisteredEvents = opts.hasOwnProperty('ignoreUnregisteredEvents') ?  opts.ignoreUnregisteredEvents : true
+        this._opts.unknownActionMsg = opts.unknownActionMsg || 'Unknown Action'
+        this._opts.ignoreUnregisteredEvents = opts.hasOwnProperty('ignoreUnregisteredEvents') ? opts.ignoreUnregisteredEvents : true
     }
     registerPreValidator(eventName, ...validators)
     {
@@ -70,7 +71,7 @@ class EventHandler
                 let val = await validator.apply(validator, args)
                 if(!val)
                 {
-                    result = [validator.msg]
+                    result = [new Errors.ValidationError(validator.msg)]
                     return true
                 }
                 return false
@@ -81,7 +82,7 @@ class EventHandler
             result = await validators.reduce(async (acc, validator) =>
             {
                 let val = await validator.apply(validator, args)
-                return val ? acc: (await acc).concat(validator.msg)
+                return val ? acc: (await acc).concat(new Errors.ValidationError(validator.msg))
             }, Promise.resolve([]))
         }
         if(result.length > 0)
@@ -104,7 +105,7 @@ class EventHandler
         if(!this._events[eventName])
         {
             if(!this._opts.ignoreUnregisteredEvents)
-                this._handleErrors(eventName, [this._opts.unknownActionMsg], args)
+                this._handleErrors(eventName, [new Errors.UnknownActionError(this._opts.unknownActionMsg)], args)
             return
         }
         try

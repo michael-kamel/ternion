@@ -1,5 +1,6 @@
 const Handling = require('../handler')
 const EventHandler = require('../lib/eventHandler')
+const Errors = require('../lib/errors')
 
 function respond(source, msgType = 'fail', msgData={}, ids = [this.senderId])
 {
@@ -26,15 +27,18 @@ function errorHandler(eventName, errs, data, response, id)
     if(errs instanceof Array)
         errs.forEach(err =>
         {
-            if(err instanceof Error)
-                response.respond('unhandledError', err.msg)
-            else if(err instanceof String)
+            if(err instanceof Errors.ValidationError)
             {
-                let msg = `Validation Errors on event ${eventName}: ${err}`
+                let msg = `Validation Errors on event ${eventName}: ${err.message}`
                 response.respond('validationErrors', msg)
             }
-            else
-                response.respond('unhandledError', err)
+            else if(err instanceof Errors.UnknownActionError)
+            {
+                let msg = `${err.message}. message: ${eventName}`
+                response.respond('unrecongnizedMessage', msg)
+            }
+            else if(err instanceof Error)
+                response.respond('unhandledError', err.message)
         })
 }
 let defaultBuild = () =>
