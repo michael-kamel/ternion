@@ -1,6 +1,6 @@
 {
   "name": "ternion",
-  "version": "0.7.3",
+  "version": "0.7.4",
   "description": "A socket.io framework that does the job for you.",
   "main": "index.js",
   "scripts": {
