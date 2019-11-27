@@ -4,6 +4,7 @@
 [![Coverage Status](https://coveralls.io/repos/github/michael-kamel/ternion/badge.svg?branch=master)](https://coveralls.io/github/michael-kamel/ternion?branch=master)
 [![Known Vulnerabilities](https://snyk.io/test/github/michael-kamel/ternion/badge.svg)](https://snyk.io/test/github/michael-kamel/ternion)
 [![Packagist](https://img.shields.io/packagist/l/doctrine/orm.svg)](https://img.shields.io/packagist/l/doctrine/orm.svg)
+[![DeepScan grade](https://deepscan.io/api/teams/6299/projects/8218/branches/94587/badge/grade.svg)](https://deepscan.io/dashboard#view=project&tid=6299&pid=8218&bid=94587)
 
 ## A plugable socket.io framework that does the job for you
 
