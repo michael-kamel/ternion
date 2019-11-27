@@ -34,7 +34,7 @@ class Handler {
 
   addBuild(build, overrideTools) {
     this.__checkBuild(build);
-    Object.keys(build.getTools()).map(toolName => {
+    Object.keys(build.getTools()).forEach(toolName => {
       if (this._tools[toolName] && !overrideTools) {
         throw new Error(`Tool ${toolName} already registered`);
       }
