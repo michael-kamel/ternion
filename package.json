@@ -4,12 +4,15 @@
   "description": "A socket.io framework that does the job for you.",
   "main": "index.js",
   "scripts": {
-    "test": "jest",
+    "lint": "npx eslint --fix --ext .js --ext .md .",
+    "test": "npm run es7i && jest",
     "test6": "npm run es6 && jest",
+    "test5": "npm run es5 && jest",
     "reportcoverage": "jest --coverage --coverageReporters=text-lcov | coveralls",
     "es5": "gulp es5p",
     "es6": "gulp es6p",
-    "es7i": "gulp es7index"
+    "es7i": "gulp es7index",
+    "p6": "npm run lint && npm run test6"
   },
   "repository": {
     "type": "git",
@@ -30,21 +33,22 @@
   "devDependencies": {
     "babel-plugin-transform-async-to-generator": "^6.24.1",
     "babel-plugin-transform-runtime": "^6.23.0",
-    "babel-preset-env": "^1.6.0",
+    "babel-preset-env": "^1.7.0",
     "babel-runtime": "^6.26.0",
-    "coveralls": "^2.13.1",
-    "eslint": "^6.7.1",
+    "coveralls": "^3.0.9",
+    "eslint": "^6.8.0",
     "eslint-config-standard": "^14.1.0",
-    "eslint-plugin-import": "^2.18.2",
-    "eslint-plugin-jest": "^23.0.5",
-    "eslint-plugin-node": "^10.0.0",
+    "eslint-plugin-import": "^2.19.1",
+    "eslint-plugin-jest": "^23.2.0",
+    "eslint-plugin-markdown": "^1.0.1",
+    "eslint-plugin-node": "^11.0.0",
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-standard": "^4.0.1",
     "gulp": "^4.0.2",
-    "gulp-babel": "^7.0.0",
-    "gulp-replace": "^0.6.1",
-    "jest": "^20.0.4",
-    "snyk": "^1.251.2"
+    "gulp-babel": "^8.0.0",
+    "gulp-replace": "^1.0.0",
+    "jest": "^24.9.0",
+    "snyk": "^1.272.0"
   },
   "engines": {
     "node": ">=6.0.0"

@@ -1,8 +1,9 @@
 function createValidator (predicate, msg) {
   const validator = function (...args) {
-    return predicate.call(predicate, ...args)
-  }
-  validator.msg = msg
-  return validator
+    return predicate.call(predicate, ...args);
+  };
+  validator.msg = msg;
+  return validator;
 }
-module.exports = createValidator
+
+module.exports = createValidator;

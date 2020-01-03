@@ -5,4 +5,5 @@ function createValidator(predicate, msg) {
   validator.msg = msg;
   return validator;
 }
+
 module.exports = createValidator;

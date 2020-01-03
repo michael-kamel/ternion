@@ -21,72 +21,67 @@ const IDENTIFIER = 'id';
 const emitter = ternion.buildTools.constructEmitter();
 const defaultBuild = ternion.builds.defaultBuild();
 
-let names = [];
-let loggedIn = {};
+const names = [];
+const loggedIn = {};
 const nameExistsValidator = ternion.buildTools.buildValidator((data, response, id) => names.indexOf(data.name) === -1, 'Name exists');
 const nameLengthValidator = ternion.buildTools.buildValidator((data, response, id) => data.name.length > 2, 'Name must be of length 3 atleast');
 const hasNameValidator = ternion.buildTools.buildValidator((data, response, id) => !!data.name, 'No Name provided');
 const loggedInValidator = ternion.buildTools.buildValidator((data, response, id) => !!loggedIn[id], 'Not logged in');
 const hasMsgValidator = ternion.buildTools.buildValidator((data, response, id) => !!data.msg, 'No message provided');
 const msgEmptyValidator = ternion.buildTools.buildValidator((data, response, id) => data.msg.length > 2, 'Message must be of length 3 at least');
-const nameFillMiddleware = (data, response, id) => { data.name = loggedIn[id] };
-const loginHandler = (data, response, id) =>
-{
-    loggedIn[id] = data.name;
-    names.push(data.name);
-    response.respond('loginsuccess');
+const nameFillMiddleware = (data, response, id) => { data.name = loggedIn[id]; };
+const loginHandler = (data, response, id) => {
+  loggedIn[id] = data.name;
+  names.push(data.name);
+  response.respond('loginsuccess');
 };
-const msgHandler = (data, response, id) =>
-{
-    response.broadcast('message', {name:data.name, msg:data.msg});
-    response.respond('message', {name:data.name, msg:data.msg});
-}
-const welcomeMsg = (data, response, id) =>
-{
-    response.respond('misc', {name:data.name, msg:'Welcome'});
-}
-const disconnect = (data, response, id) =>
-{
-    delete loggedIn[id];
-    names.splice(names.indexOf(data.name), 1);
-}
+const msgHandler = (data, response, id) => {
+  response.broadcast('message', { name: data.name, msg: data.msg });
+  response.respond('message', { name: data.name, msg: data.msg });
+};
+const welcomeMsg = (data, response, id) => {
+  response.respond('misc', { name: data.name, msg: 'Welcome' });
+};
+const disconnect = (data, response, id) => {
+  delete loggedIn[id];
+  names.splice(names.indexOf(data.name), 1);
+};
 
-
-let buildSpec =
+const buildSpec =
 {
-    events:
+  events:
     {
-        newclient:
+      newclient:
         {
-            handlers:[welcomeMsg]
+          handlers: [ welcomeMsg ]
         },
-        disconnect:
+      disconnect:
         {
-            middlewares:[nameFillMiddleware],
-            handlers:[disconnect]
+          middlewares: [ nameFillMiddleware ],
+          handlers: [ disconnect ]
         },
-        login:
+      login:
         {
-            preValidators:[hasNameValidator, nameLengthValidator, nameExistsValidator],
-            handlers:[loginHandler]
+          preValidators: [ hasNameValidator, nameLengthValidator, nameExistsValidator ],
+          handlers: [ loginHandler ]
         },
-        message:
+      message:
         {
-            preValidators:[loggedInValidator, hasMsgValidator, msgEmptyValidator],
-            middlewares:[nameFillMiddleware],
-            handlers:[msgHandler]
+          preValidators: [ loggedInValidator, hasMsgValidator, msgEmptyValidator ],
+          middlewares: [ nameFillMiddleware ],
+          handlers: [ msgHandler ]
         }
     }
 };
 const newBuild = ternion.buildTools.constructBuild(
-{
+  {
     buildSpec,
-    opts:{preFailFast:true, postFailFast:true, unknownActionMsg:'unknown', ignoreUnregisteredEvents:false}
-});
+    opts: { preFailFast: true, postFailFast: true, unknownActionMsg: 'unknown', ignoreUnregisteredEvents: false }
+  });
 
-const build = ternion.buildTools.mergeBuilds({builds:[defaultBuild, newBuild]});
-const handler = ternion.buildTools.constructHandler({build, emitter, identifier:IDENTIFIER});
-const sock = ternion.buildTools.constructManager({eventSource:io, emitter, identifier:IDENTIFIER});
+const build = ternion.buildTools.mergeBuilds({ builds: [ defaultBuild, newBuild ] });
+const handler = ternion.buildTools.constructHandler({ build, emitter, identifier: IDENTIFIER });
+const sock = ternion.buildTools.constructManager({ eventSource: io, emitter, identifier: IDENTIFIER });
 
 sock.start();
 handler.start();
@@ -95,25 +90,22 @@ handler.start();
 ``` javascript
 const io = require('socket.io-client');
 
-let client = io('http://localhost:8000/');
-  client.on('connect', function()
-  {
-      console.log('connected');
-      client.emit('message', {msgType:'login', msgData:{name:'testname'}});
-  });
-  client.on('message', function(data)
-  {
-      let mdata = data.msgData;
-      switch(data.msgType)
-      {
-        case 'validationErrors': console.log(mdata); break;
-        case 'loginsuccess': { console.log('logged in');  client.emit('message', {msgType:'message', msgData:{msg:'some random msg'}}); break; }
-        case 'misc': console.log(mdata.msg); break;
-        case 'message': console.log('message from ' + mdata.name + ' : ' + mdata.msg); break;
-        case 'unhandledError': console.log('unhandled: ' + mdata); break;
-        case 'unrecongnizedMessage': console.log('unrecongnized: ' + mdata); break;
-      }
-  });
-  client.on('disconnect', function(){ console.log('server closed connection')});
+const client = io('http://localhost:8000/');
+client.on('connect', function () {
+  console.log('connected');
+  client.emit('message', { msgType: 'login', msgData: { name: 'testname' } });
+});
+client.on('message', function (data) {
+  const mdata = data.msgData;
+  switch (data.msgType) {
+    case 'validationErrors': console.log(mdata); break;
+    case 'loginsuccess': { console.log('logged in'); client.emit('message', { msgType: 'message', msgData: { msg: 'some random msg' } }); break; }
+    case 'misc': console.log(mdata.msg); break;
+    case 'message': console.log('message from ' + mdata.name + ' : ' + mdata.msg); break;
+    case 'unhandledError': console.log('unhandled: ' + mdata); break;
+    case 'unrecongnizedMessage': console.log('unrecongnized: ' + mdata); break;
+  }
+});
+client.on('disconnect', function () { console.log('server closed connection'); });
 
 ```

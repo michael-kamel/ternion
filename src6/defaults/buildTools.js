@@ -26,6 +26,7 @@ function constructBuild({ buildSpec, errorHandler, tools, opts }) {
   base.setHandler(handler);
   return base;
 }
+
 function mergeBuilds({ errorHandler, opts, builds }) {
   const base = new Build();
   const handler = new EventHandler(errorHandler || builds[0].getHandler()._errorHandler, opts || builds[builds.length - 1].getHandler()._opts);
@@ -39,6 +40,7 @@ function mergeBuilds({ errorHandler, opts, builds }) {
   base.setHandler(handler);
   return base;
 }
+
 function patchType(handler, builds, typeName) {
   builds.forEach(bld => {
     Object.keys(bld.getHandler()._events).forEach(evtName => {
@@ -49,15 +51,19 @@ function patchType(handler, builds, typeName) {
     });
   });
 }
+
 function constructHandler({ build, emitter, identifier }) {
   return new Handling.Handler(build, emitter, identifier);
 }
+
 function constructEventHandler({ errorHandler, opts }) {
   return new EventHandler(errorHandler, opts);
 }
+
 function constructManager({ eventSource, emitter, identifier }) {
   return new Manager(eventSource, emitter, identifier);
 }
+
 function constructEmitter() {
   return new Emitter();
 }
