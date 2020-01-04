@@ -59,7 +59,7 @@ class EventHandler {
   async _validate (eventName, validators, args, failFast) {
     let result = [];
     if (failFast) {
-      await utils.asyncSome(validators, async validator => {
+      await utils.asyncSomeSequential(validators, async validator => {
         const val = await validator.apply(validator, args);
         if (!val) {
           result = [ new Errors.ValidationError(validator.msg) ];
@@ -70,7 +70,7 @@ class EventHandler {
     } else {
       result = await validators.reduce(async (acc, validator) => {
         const val = await validator.apply(validator, args);
-        return val ? acc : (await acc).concat(new Errors.ValidationError(validator.msg));
+        return val ? acc : acc.then(acc => acc.concat(new Errors.ValidationError(validator.msg)));
       }, Promise.resolve([]));
     }
     if (result.length > 0) {

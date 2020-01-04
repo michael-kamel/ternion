@@ -18,17 +18,17 @@ gulp.task('es6', () => {
     .pipe(gulp.dest('./src6'));
 });
 gulp.task('es6index', () => {
-  return gulp.src([ 'index.js' ])
+  return gulp.src([ './index.js', './tests/**/*.js' ], { base: './' })
     .pipe(replace('src/', 'src6/'))
     .pipe(gulp.dest('./'));
 });
 gulp.task('es5index', () => {
-  return gulp.src([ 'index.js' ])
+  return gulp.src([ './index.js', './tests/**/*.js' ], { base: './' })
     .pipe(replace('src/', 'src5/'))
     .pipe(gulp.dest('./'));
 });
 gulp.task('es7index', () => {
-  return gulp.src([ 'index.js' ])
+  return gulp.src([ './index.js', './tests/**/*.js' ], { base: './' })
     .pipe(replace('src6/', 'src/'))
     .pipe(replace('src5/', 'src/'))
     .pipe(gulp.dest('./'));

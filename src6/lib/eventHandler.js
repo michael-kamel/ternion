@@ -64,7 +64,7 @@ class EventHandler {
     return _asyncToGenerator(function* () {
       let result = [];
       if (failFast) {
-        yield utils.asyncSome(validators, (() => {
+        yield utils.asyncSomeSequential(validators, (() => {
           var _ref = _asyncToGenerator(function* (validator) {
             const val = yield validator.apply(validator, args);
             if (!val) {
