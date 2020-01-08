@@ -81,11 +81,11 @@ class EventHandler {
   }
 
   async _applyMiddlewares (eventName, args) {
-    await this._events[eventName].middlewares.reduce((acc, middleware) => acc.then(result => middleware.apply(middleware, args)), Promise.resolve());
+    await this._events[eventName].middlewares.reduce((acc, middleware) => acc.then(() => middleware.apply(middleware, args)), Promise.resolve());
   }
 
   async _applyHandlers (eventName, args) {
-    await this._events[eventName].handlers.reduce((acc, handler) => acc.then(result => handler.apply(handler, args)), Promise.resolve());
+    await this._events[eventName].handlers.reduce((acc, handler) => acc.then(() => handler.apply(handler, args)), Promise.resolve());
   }
 
   async handle (eventName, ...args) {
