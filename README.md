@@ -5,6 +5,8 @@
 [![Known Vulnerabilities](https://snyk.io/test/github/michael-kamel/ternion/badge.svg)](https://snyk.io/test/github/michael-kamel/ternion)
 [![Packagist](https://img.shields.io/packagist/l/doctrine/orm.svg)](https://img.shields.io/packagist/l/doctrine/orm.svg)
 [![DeepScan grade](https://deepscan.io/api/teams/6299/projects/8218/branches/94587/badge/grade.svg)](https://deepscan.io/dashboard#view=project&tid=6299&pid=8218&bid=94587)
+[![Maintainability](https://api.codeclimate.com/v1/badges/d1e548a5f9be482a64d9/maintainability)](https://codeclimate.com/github/michael-kamel/ternion/maintainability)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/4091b2ded5b6418bbb03b02f001d8ed5)](https://www.codacy.com/manual/michael-kamel/ternion?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=michael-kamel/ternion&amp;utm_campaign=Badge_Grade)
 
 ## A plugable socket.io framework that does the job for you
 
