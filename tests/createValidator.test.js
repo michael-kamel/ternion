@@ -1,20 +1,23 @@
-const createValidator = require('../src6/lib/validator');
+const createValidator = require('../src/lib/validator');
 
-describe('Validator Creation', () => {
-  test('has message', () => {
+describe('validator Creation', () => {
+  it('has message', () => {
     const validator = createValidator(() => true, 'test');
     expect(validator.msg).toBeDefined();
     expect(validator.msg).toBe('test');
   });
-  test('has error', () => {
+
+  it('has error', () => {
     const validator = createValidator(() => true, new Error());
     expect(validator.msg).toBeDefined();
     expect(validator.msg).toBeInstanceOf(Error);
   });
-  test('returns function', () => {
+
+  it('returns function', () => {
     expect(createValidator(() => true, 'test')).toBeInstanceOf(Function);
   });
-  test('calls validator', () => {
+
+  it('calls validator', () => {
     const predicate = jest.fn().mockImplementation(() => {});
     const validator = createValidator(predicate, 'test');
     validator(1, 2, 3);

@@ -2,11 +2,15 @@ const EventHandler = require('./lib/eventHandler');
 const utils = require('./lib/utils');
 
 class Handler {
-  constructor (build, emitter, identifier) {
+  constructor(build, emitter, identifier) {
     this.__checkBuild(build);
-    if (!emitter) { throw new Error('No emitter provided'); }
-    if (!identifier) { throw new Error('No identifier provided'); }
-    this._eventHandlers = [ build.getHandler() ];
+    if (!emitter) {
+      throw new Error('No emitter provided');
+    }
+    if (!identifier) {
+      throw new Error('No identifier provided');
+    }
+    this._eventHandlers = [build.getHandler()];
     this._emitter = emitter;
     this._identifier = identifier;
     this._started = false;
@@ -17,68 +21,77 @@ class Handler {
     });
   }
 
-  __checkBuild (build) {
-    if (!build || !(build instanceof HandlerBuild)) { throw new Error('No build provided'); }
-    if (!build.getHandler()) { throw new Error('Build is incomplete. A handler must be specified'); }
+  __checkBuild(build) {
+    if (!build || !(build instanceof HandlerBuild)) {
+      throw new Error('No build provided');
+    }
+    if (!build.getHandler()) {
+      throw new Error('Build is incomplete. A handler must be specified');
+    }
   }
 
-  addBuild (build, overrideTools) {
+  addBuild(build, overrideTools) {
     this.__checkBuild(build);
     Object.keys(build.getTools()).forEach(toolName => {
-      if (this._tools[toolName] && !overrideTools) { throw new Error(`Tool ${toolName} already registered`); }
+      if (this._tools[toolName] && !overrideTools) {
+        throw new Error(`Tool ${toolName} already registered`);
+      }
       this._tools[toolName] = utils.partial(build.getTools()[toolName], this);
     });
     this._eventHandlers.push(build.getHandler());
   }
 
-  start () {
-    if (this._started) { throw new Error('Handler already started'); }
+  start() {
+    if (this._started) {
+      throw new Error('Handler already started');
+    }
     this._emitter.on(this._identifier, this._receiver);
   }
 
-  addSource (identifier) {
+  addSource(identifier) {
     this._emitter.on(identifier, this._receiver);
   }
 
-  _receive ({ eventType, senderId, data = {} }) {
+  _receive({ eventType, senderId, data = {} }) {
     const response = this.__patchTools(data, senderId);
     this._eventHandlers.forEach(async handler => {
       await handler.handle(eventType, data, response, senderId);
     });
   }
 
-  __patchTools (data, senderId) {
+  __patchTools(data, senderId) {
     const response = Object.assign({ data, senderId }, this._tools);
     return response;
   }
 }
 class HandlerBuild {
-  constructor () {
+  constructor() {
     this._tools = {};
   }
 
-  getHandler () {
+  getHandler() {
     return this._handler;
   }
 
-  getTools () {
+  getTools() {
     return this._tools;
   }
 
-  setHandler (handler) {
-    if (!(handler instanceof EventHandler)) { throw new Error('Handler must be an event Handler'); }
+  setHandler(handler) {
+    if (!(handler instanceof EventHandler)) {
+      throw new Error('Handler must be an event Handler');
+    }
     this._handler = handler;
     return this;
   }
 
-  patchTools (tools) {
+  patchTools(tools) {
     Object.assign(this._tools, tools);
     return this;
   }
 }
 
-module.exports =
-{
+module.exports = {
   Handler,
   HandlerBuild
 };

@@ -4,6 +4,7 @@
   "description": "A socket.io framework that does the job for you.",
   "main": "index.js",
   "scripts": {
+    "pret": "npx prettier --write '**/*.js'",
     "lint": "npx eslint --fix --ext .js --ext .md .",
     "test": "npm run es7i && jest",
     "test6": "npm run es6 && jest",
@@ -12,7 +13,8 @@
     "es5": "gulp es5p",
     "es6": "gulp es6p",
     "es7i": "gulp es7index",
-    "p6": "npm run lint && npm run test6"
+    "p": "npm run pret && npm run lint && npm run test",
+    "p6": "npm run pret && npm run lint && npm run test6"
   },
   "repository": {
     "type": "git",
@@ -42,15 +44,17 @@
     "eslint-plugin-jest": "^23.2.0",
     "eslint-plugin-markdown": "^1.0.1",
     "eslint-plugin-node": "^11.0.0",
+    "eslint-plugin-prettier": "^3.1.2",
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-standard": "^4.0.1",
     "gulp": "^4.0.2",
     "gulp-babel": "^8.0.0",
     "gulp-replace": "^1.0.0",
     "jest": "^24.9.0",
-    "snyk": "^1.272.0"
+    "prettier": "1.19.1",
+    "snyk": "^1.277.0"
   },
   "engines": {
-    "node": ">=6.0.0"
+    "node": ">=7.10.1"
   }
 }

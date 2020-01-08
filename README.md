@@ -53,23 +53,23 @@ const buildSpec =
     {
       newclient:
         {
-          handlers: [ welcomeMsg ]
+          handlers: [welcomeMsg]
         },
       disconnect:
         {
-          middlewares: [ nameFillMiddleware ],
-          handlers: [ disconnect ]
+          middlewares: [nameFillMiddleware],
+          handlers: [disconnect]
         },
       login:
         {
-          preValidators: [ hasNameValidator, nameLengthValidator, nameExistsValidator ],
-          handlers: [ loginHandler ]
+          preValidators: [hasNameValidator, nameLengthValidator, nameExistsValidator],
+          handlers: [loginHandler]
         },
       message:
         {
-          preValidators: [ loggedInValidator, hasMsgValidator, msgEmptyValidator ],
-          middlewares: [ nameFillMiddleware ],
-          handlers: [ msgHandler ]
+          preValidators: [loggedInValidator, hasMsgValidator, msgEmptyValidator],
+          middlewares: [nameFillMiddleware],
+          handlers: [msgHandler]
         }
     }
 };
@@ -79,7 +79,7 @@ const newBuild = ternion.buildTools.constructBuild(
     opts: { preFailFast: true, postFailFast: true, unknownActionMsg: 'unknown', ignoreUnregisteredEvents: false }
   });
 
-const build = ternion.buildTools.mergeBuilds({ builds: [ defaultBuild, newBuild ] });
+const build = ternion.buildTools.mergeBuilds({ builds: [defaultBuild, newBuild] });
 const handler = ternion.buildTools.constructHandler({ build, emitter, identifier: IDENTIFIER });
 const sock = ternion.buildTools.constructManager({ eventSource: io, emitter, identifier: IDENTIFIER });
 
@@ -91,11 +91,11 @@ handler.start();
 const io = require('socket.io-client');
 
 const client = io('http://localhost:8000/');
-client.on('connect', function () {
+client.on('connect', function() {
   console.log('connected');
   client.emit('message', { msgType: 'login', msgData: { name: 'testname' } });
 });
-client.on('message', function (data) {
+client.on('message', function(data) {
   const mdata = data.msgData;
   switch (data.msgType) {
     case 'validationErrors': console.log(mdata); break;
@@ -106,6 +106,6 @@ client.on('message', function (data) {
     case 'unrecongnizedMessage': console.log('unrecongnized: ' + mdata); break;
   }
 });
-client.on('disconnect', function () { console.log('server closed connection'); });
+client.on('disconnect', function() { console.log('server closed connection'); });
 
 ```

@@ -6,7 +6,7 @@
     },
     "extends": [
         "eslint:recommended",
-        "plugin:jest/recommended",
+        "plugin:jest/all",
         "standard"
     ],
     "globals": {
@@ -15,7 +15,8 @@
     },
     "plugins": [
         "jest",
-        "markdown"
+        "markdown",
+        "jest"
     ],
     "parserOptions": {
         "ecmaVersion": 2018
@@ -26,24 +27,33 @@
         "no-console": ["error"],
         "require-atomic-updates": ["error"],
         "quotes": ["error", "single", { "allowTemplateLiterals": true }],
-        "array-bracket-spacing": ["warn", "always"],
         "block-spacing": ["error", "always"],
         "brace-style": ["warn", "1tbs", { "allowSingleLine": true }],
         "space-before-blocks": ["warn", { "functions": "always" }],
         "linebreak-style": ["error", "unix"],
-        "lines-between-class-members": ["warn", "always"]
+        "lines-between-class-members": ["warn", "always"],
+        "max-len": ["error", { "ignoreComments": true, "ignoreStrings": true }],
+        "max-depth": ["error", 2],
+        "space-before-function-paren": ["error", "never"]
     },
     "overrides": [
         {
             "files": ["./tests/**/*.js"],
             "rules": {
-                "no-unused-vars": ["warn", { "vars": "all", "args": "all", "ignoreRestSiblings": false }]
+                "no-unused-vars": ["warn", { "vars": "all", "args": "all", "ignoreRestSiblings": false }],
+                "jest/prefer-expect-assertions": ["off"],
+                "jest/prefer-called-with": ["off"],
+                "jest/require-to-throw-message": ["warn"]
             }
         },
         {
             "files": ["./**/*.md"],
             "rules": {
-                "no-console": ["off"]
+                "no-undef": ["off"],
+                "no-unused-vars": ["off"],
+                "no-console": ["off"],
+                "padded-blocks": ["off"],
+                "max-len": ["off"]
             }
         }
     ]

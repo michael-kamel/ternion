@@ -1,20 +1,23 @@
-const Emitter = require('../src6/emitter');
+const Emitter = require('../src/emitter');
 
 const EventEmitter = require('events');
 
-describe('Emitter Tests', () => {
-  test('constructs valid emitter', () => {
+describe('emitter Tests', () => {
+  it('constructs valid emitter', () => {
     expect(new Emitter(new EventEmitter())).toBeInstanceOf(Emitter);
   });
-  test('does not construct invalid emitter', () => {
-    expect(() => new Emitter({})).toThrowError();
+
+  it('does not construct invalid emitter', () => {
+    expect(() => new Emitter({})).toThrow();
   });
-  test('gets emitter', () => {
+
+  it('gets emitter', () => {
     const emitt = new EventEmitter();
     const emitter = new Emitter(emitt);
     expect(emitter.getEmitter()).toBe(emitt);
   });
-  test('calls emit correctly', () => {
+
+  it('calls emit correctly', () => {
     const emitt = new EventEmitter();
     const emitter = new Emitter(emitt);
     const mock = jest.fn();
@@ -23,7 +26,8 @@ describe('Emitter Tests', () => {
     expect(mock).toHaveBeenCalledTimes(1);
     expect(mock).toHaveBeenCalledWith('test', 'data');
   });
-  test('adds listener correctly', () => {
+
+  it('adds listener correctly', () => {
     const emitt = new EventEmitter();
     const emitter = new Emitter(emitt);
     const mock = jest.fn();
@@ -33,7 +37,8 @@ describe('Emitter Tests', () => {
     expect(mock).toHaveBeenCalledTimes(1);
     expect(mock).toHaveBeenCalledWith('tev', listener);
   });
-  test('removes listener correctly', () => {
+
+  it('removes listener correctly', () => {
     const emitt = new EventEmitter();
     const emitter = new Emitter(emitt);
     const mock = jest.fn();
@@ -43,7 +48,8 @@ describe('Emitter Tests', () => {
     expect(mock).toHaveBeenCalledTimes(1);
     expect(mock).toHaveBeenCalledWith('tev', listener);
   });
-  test('auto fills listener', () => {
+
+  it('auto fills listener', () => {
     const emitter = new Emitter();
     expect(emitter._emitter).toBeInstanceOf(EventEmitter);
   });

@@ -2,25 +2,48 @@ const Handling = require('../handler');
 const EventHandler = require('../lib/eventHandler');
 const Errors = require('../lib/errors');
 
-function respond (source, msgType = 'fail', msgData = {}, ids = [ this.senderId ]) {
-  source._emitter.emit(`${source._identifier}-response`, { ids, msgType, msgData });
+function respond(
+  source,
+  msgType = 'fail',
+  msgData = {},
+  ids = [this.senderId]
+) {
+  source._emitter.emit(`${source._identifier}-response`, {
+    ids,
+    msgType,
+    msgData
+  });
 }
 
-function feedback (source, eventName, data = {}, opts = { timeout: 0, id: -1 }) {
+function feedback(source, eventName, data = {}, opts = { timeout: 0, id: -1 }) {
   setTimeout(() => {
-    source._receive({ eventType: eventName, data, senderId: opts.id || this.senderId });
+    source._receive({
+      eventType: eventName,
+      data,
+      senderId: opts.id || this.senderId
+    });
   }, opts.timeout);
 }
 
-function broadcast (source, msgType = 'fail', msgData = {}) {
-  source._emitter.emit(`${source._identifier}-response`, { ids: [ this.senderId ], msgType, msgData, broadcast: true });
+function broadcast(source, msgType = 'fail', msgData = {}) {
+  source._emitter.emit(`${source._identifier}-response`, {
+    ids: [this.senderId],
+    msgType,
+    msgData,
+    broadcast: true
+  });
 }
 
-function disconnect (source, ids = [ this.senderId ]) {
-  source._emitter.emit(`${source._identifier}-response`, { ids, msgType: 'disconnect', msgData: {}, disconnect: true });
+function disconnect(source, ids = [this.senderId]) {
+  source._emitter.emit(`${source._identifier}-response`, {
+    ids,
+    msgType: 'disconnect',
+    msgData: {},
+    disconnect: true
+  });
 }
 
-function errorHandler (eventName, errs, data, response, id) {
+function errorHandler(eventName, errs, data, response, id) {
   if (errs instanceof Array) {
     errs.forEach(err => {
       if (err instanceof Errors.ValidationError) {
@@ -29,13 +52,19 @@ function errorHandler (eventName, errs, data, response, id) {
       } else if (err instanceof Errors.UnknownActionError) {
         const msg = `${err.message}. message: ${eventName}`;
         response.respond('unrecongnizedMessage', msg);
-      } else if (err instanceof Error) { response.respond('unhandledError', err.message); }
+      } else if (err instanceof Error) {
+        response.respond('unhandledError', err.message);
+      }
     });
   }
 }
 
 const defaultBuild = () => {
-  const eventHandler = new EventHandler(errorHandler, { preFailFast: true, postFailFast: true, unknownActionMsg: 'Unknown Action' });
+  const eventHandler = new EventHandler(errorHandler, {
+    preFailFast: true,
+    postFailFast: true,
+    unknownActionMsg: 'Unknown Action'
+  });
   const build = new Handling.HandlerBuild();
   build.setHandler(eventHandler);
   build.patchTools({
@@ -51,8 +80,7 @@ const emptyBuild = () => {
   return new Handling.HandlerBuild();
 };
 
-module.exports =
-{
+module.exports = {
   defaultBuild,
   emptyBuild
 };
