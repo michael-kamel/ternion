@@ -8,7 +8,13 @@ async function asyncSomeSequential(arr, func) {
 }
 
 function asyncSomeConcurrent(arr, func) {
-  return Promise.race(arr.map(element => func(arr[element])));
+  return new Promise((resolve, reject) => {
+    Promise.all(
+      arr.map(element =>
+        Promise.resolve(func(arr[element])).then(val => val && resolve())
+      )
+    ).then(resolve);
+  });
 }
 
 function partial(func, ...args) {
