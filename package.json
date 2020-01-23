@@ -1,20 +1,14 @@
 {
   "name": "ternion",
-  "version": "0.8.2",
+  "version": "0.8.3",
   "description": "A socket.io framework that does the job for you.",
   "main": "index.js",
   "scripts": {
     "pret": "npx prettier --write '**/*.js'",
     "lint": "npx eslint --fix --ext .js --ext .md .",
-    "test": "npm run es7i && jest",
-    "test6": "npm run es6 && jest",
-    "test5": "npm run es5 && jest",
+    "test": "npx jest",
     "reportcoverage": "jest --coverage --coverageReporters=text-lcov | coveralls",
-    "es5": "gulp es5p",
-    "es6": "gulp es6p",
-    "es7i": "gulp es7index",
-    "p": "npm run pret && npm run lint && npm run test",
-    "p6": "npm run pret && npm run lint && npm run test6"
+    "p": "npm run pret && npm run lint && npm run test"
   },
   "repository": {
     "type": "git",
@@ -33,10 +27,6 @@
   "homepage": "https://github.com/michael-kamel/ternion#readme",
   "dependencies": {},
   "devDependencies": {
-    "babel-plugin-transform-async-to-generator": "^6.24.1",
-    "babel-plugin-transform-runtime": "^6.23.0",
-    "babel-preset-env": "^1.7.0",
-    "babel-runtime": "^6.26.0",
     "coveralls": "^3.0.9",
     "eslint": "^6.8.0",
     "eslint-config-standard": "^14.1.0",
@@ -47,9 +37,6 @@
     "eslint-plugin-prettier": "^3.1.2",
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-standard": "^4.0.1",
-    "gulp": "^4.0.2",
-    "gulp-babel": "^8.0.0",
-    "gulp-replace": "^1.0.0",
     "jest": "^24.9.0",
     "prettier": "1.19.1",
     "snyk": "^1.277.0"

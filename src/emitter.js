@@ -1,9 +1,9 @@
-const EventEmitter = require('events');
+const EventEmitter = require("events");
 
 class Emitter {
   constructor(emitter = new EventEmitter()) {
     if (!(emitter instanceof EventEmitter)) {
-      throw new Error('Emitter must be an event emitter');
+      throw new Error("Emitter must be an event emitter");
     }
     this._emitter = emitter;
   }

@@ -1,9 +1,9 @@
-const Handling = require('../handler');
+const Handling = require("../handler");
 const Build = Handling.HandlerBuild;
-const EventHandler = require('../lib/eventHandler');
-const Manager = require('../manager');
-const Emitter = require('../emitter');
-const buildValidator = require('../lib/validator');
+const EventHandler = require("../lib/eventHandler");
+const Manager = require("../manager");
+const Emitter = require("../emitter");
+const buildValidator = require("../lib/validator");
 
 function constructBuild({ buildSpec, errorHandler, tools, opts }) {
   const base = new Build();
@@ -42,12 +42,12 @@ function mergeBuilds({ errorHandler, opts, builds }) {
     errorHandler || builds[0].getHandler()._errorHandler,
     opts || builds[builds.length - 1].getHandler()._opts
   );
-  handler.initEvent('newclient');
-  handler.initEvent('disconnect');
-  patchType(handler, builds, 'preValidators');
-  patchType(handler, builds, 'middlewares');
-  patchType(handler, builds, 'postValidators');
-  patchType(handler, builds, 'handlers');
+  handler.initEvent("newclient");
+  handler.initEvent("disconnect");
+  patchType(handler, builds, "preValidators");
+  patchType(handler, builds, "middlewares");
+  patchType(handler, builds, "postValidators");
+  patchType(handler, builds, "handlers");
   base.patchTools(
     builds.reduce((acc, build) => Object.assign(acc, build.getTools()), {})
   );

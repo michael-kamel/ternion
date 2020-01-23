@@ -1,14 +1,14 @@
-const EventHandler = require('./lib/eventHandler');
-const utils = require('./lib/utils');
+const EventHandler = require("./lib/eventHandler");
+const utils = require("./lib/utils");
 
 class Handler {
   constructor(build, emitter, identifier) {
     this.__checkBuild(build);
     if (!emitter) {
-      throw new Error('No emitter provided');
+      throw new Error("No emitter provided");
     }
     if (!identifier) {
-      throw new Error('No identifier provided');
+      throw new Error("No identifier provided");
     }
     this._eventHandlers = [build.getHandler()];
     this._emitter = emitter;
@@ -23,10 +23,10 @@ class Handler {
 
   __checkBuild(build) {
     if (!build || !(build instanceof HandlerBuild)) {
-      throw new Error('No build provided');
+      throw new Error("No build provided");
     }
     if (!build.getHandler()) {
-      throw new Error('Build is incomplete. A handler must be specified');
+      throw new Error("Build is incomplete. A handler must be specified");
     }
   }
 
@@ -43,7 +43,7 @@ class Handler {
 
   start() {
     if (this._started) {
-      throw new Error('Handler already started');
+      throw new Error("Handler already started");
     }
     this._emitter.on(this._identifier, this._receiver);
   }
@@ -79,7 +79,7 @@ class HandlerBuild {
 
   setHandler(handler) {
     if (!(handler instanceof EventHandler)) {
-      throw new Error('Handler must be an event Handler');
+      throw new Error("Handler must be an event Handler");
     }
     this._handler = handler;
     return this;

@@ -5,16 +5,11 @@
         "node": true
     },
     "extends": [
+        "standard",
         "eslint:recommended",
-        "plugin:jest/all",
-        "standard"
+        "plugin:jest/all"
     ],
-    "globals": {
-        "Atomics": "readonly",
-        "SharedArrayBuffer": "readonly"
-    },
     "plugins": [
-        "jest",
         "markdown",
         "jest"
     ],
@@ -26,7 +21,7 @@
         "no-unused-vars": ["warn", { "vars": "all", "args": "all", "ignoreRestSiblings": false, "caughtErrors": "all" }],
         "no-console": ["error"],
         "require-atomic-updates": ["error"],
-        "quotes": ["error", "single", { "allowTemplateLiterals": true }],
+        "quotes": ["error", "double", { "allowTemplateLiterals": true }],
         "block-spacing": ["error", "always"],
         "brace-style": ["warn", "1tbs", { "allowSingleLine": true }],
         "space-before-blocks": ["warn", { "functions": "always" }],

@@ -1,19 +1,19 @@
-const EventEmitter = require('events');
-const Emitter = require('./emitter');
+const EventEmitter = require("events");
+const Emitter = require("./emitter");
 
 class Manager {
   constructor(eventSource, emitter, identifier) {
     if (!eventSource) {
-      throw new Error('No event source provided');
+      throw new Error("No event source provided");
     }
     if (
       !emitter ||
       !(emitter instanceof EventEmitter || emitter instanceof Emitter)
     ) {
-      throw new Error('No emitter provided');
+      throw new Error("No emitter provided");
     }
     if (!identifier) {
-      throw new Error('No identifier provided');
+      throw new Error("No identifier provided");
     }
     this._eventSource = eventSource;
     this._emitter = emitter;
@@ -34,7 +34,7 @@ class Manager {
       if (msg.broadcast) {
         if (self._eventSource.sockets.connected[msg.ids[0]]) {
           self._eventSource.sockets.connected[msg.ids[0]].broadcast.emit(
-            'message',
+            "message",
             {
               msgType: msg.msgType,
               msgData: msg.msgData
@@ -50,7 +50,7 @@ class Manager {
       } else {
         msg.ids.forEach(id => {
           if (self._eventSource.sockets.connected[id]) {
-            self._eventSource.sockets.connected[id].emit('message', {
+            self._eventSource.sockets.connected[id].emit("message", {
               msgType: msg.msgType,
               msgData: msg.msgData
             });
@@ -62,29 +62,29 @@ class Manager {
 
   addNamespace(namespace) {
     if (!this._eventSource.of) {
-      throw new Error('The provided event source does not support namespacing');
+      throw new Error("The provided event source does not support namespacing");
     }
     if (
       !namespace ||
-      typeof namespace !== 'string' ||
-      !namespace.startsWith('/') ||
+      typeof namespace !== "string" ||
+      !namespace.startsWith("/") ||
       namespace.length < 2
     ) {
-      throw new Error('Invalid namespace');
+      throw new Error("Invalid namespace");
     }
     this._setupConnection(namespace);
   }
 
-  _setupConnection(namespace = '') {
+  _setupConnection(namespace = "") {
     const nsp =
-      namespace === '' ? this._eventSource : this._eventSource.of(namespace);
+      namespace === "" ? this._eventSource : this._eventSource.of(namespace);
     const self = this;
-    nsp.on('connection', function(socket) {
+    nsp.on("connection", function(socket) {
       self._emitter.emit(`${self._identifier}${namespace}`, {
-        eventType: 'newclient',
+        eventType: "newclient",
         senderId: socket.id
       });
-      socket.on('message', function(data) {
+      socket.on("message", function(data) {
         if (!data || !data.msgType) {
           return;
         }
@@ -94,16 +94,16 @@ class Manager {
           data: data.msgData || {}
         });
       });
-      socket.on('disconnect', function(reason) {
+      socket.on("disconnect", function(reason) {
         self._emitter.emit(`${self._identifier}${namespace}`, {
-          eventType: 'disconnect',
+          eventType: "disconnect",
           senderId: socket.id
         });
       });
     });
   }
 
-  emit(msgType, data, namespace = '') {
+  emit(msgType, data, namespace = "") {
     const event = { eventType: msgType };
     Object.assign(event, data);
     this._emitter.emit(`${this._identifier}${namespace}`, event);

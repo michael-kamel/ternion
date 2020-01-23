@@ -1,5 +1,5 @@
-const utils = require('./utils');
-const Errors = require('./errors');
+const utils = require("./utils");
+const Errors = require("./errors");
 
 class EventHandler {
   constructor(errorHandler, opts) {
@@ -20,7 +20,7 @@ class EventHandler {
       opts.postFailFast === undefined ? true : opts.postFailFast;
     this._opts.unknownActionMsg =
       opts.unknownActionMsg === undefined
-        ? 'Unknown Action'
+        ? "Unknown Action"
         : opts.unknownActionMsg;
     this._opts.ignoreUnregisteredEvents =
       opts.ignoreUnregisteredEvents === undefined

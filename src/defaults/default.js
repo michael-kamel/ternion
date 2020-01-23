@@ -1,10 +1,10 @@
-const Handling = require('../handler');
-const EventHandler = require('../lib/eventHandler');
-const Errors = require('../lib/errors');
+const Handling = require("../handler");
+const EventHandler = require("../lib/eventHandler");
+const Errors = require("../lib/errors");
 
 function respond(
   source,
-  msgType = 'fail',
+  msgType = "fail",
   msgData = {},
   ids = [this.senderId]
 ) {
@@ -25,7 +25,7 @@ function feedback(source, eventName, data = {}, opts = { timeout: 0, id: -1 }) {
   }, opts.timeout);
 }
 
-function broadcast(source, msgType = 'fail', msgData = {}) {
+function broadcast(source, msgType = "fail", msgData = {}) {
   source._emitter.emit(`${source._identifier}-response`, {
     ids: [this.senderId],
     msgType,
@@ -37,7 +37,7 @@ function broadcast(source, msgType = 'fail', msgData = {}) {
 function disconnect(source, ids = [this.senderId]) {
   source._emitter.emit(`${source._identifier}-response`, {
     ids,
-    msgType: 'disconnect',
+    msgType: "disconnect",
     msgData: {},
     disconnect: true
   });
@@ -48,12 +48,12 @@ function errorHandler(eventName, errs, data, response, id) {
     errs.forEach(err => {
       if (err instanceof Errors.ValidationError) {
         const msg = `Validation Errors on event ${eventName}: ${err.message}`;
-        response.respond('validationErrors', msg);
+        response.respond("validationErrors", msg);
       } else if (err instanceof Errors.UnknownActionError) {
         const msg = `${err.message}. message: ${eventName}`;
-        response.respond('unrecongnizedMessage', msg);
+        response.respond("unrecongnizedMessage", msg);
       } else if (err instanceof Error) {
-        response.respond('unhandledError', err.message);
+        response.respond("unhandledError", err.message);
       }
     });
   }
@@ -63,7 +63,7 @@ const defaultBuild = () => {
   const eventHandler = new EventHandler(errorHandler, {
     preFailFast: true,
     postFailFast: true,
-    unknownActionMsg: 'Unknown Action'
+    unknownActionMsg: "Unknown Action"
   });
   const build = new Handling.HandlerBuild();
   build.setHandler(eventHandler);
