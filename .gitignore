@@ -60,3 +60,4 @@ typings/
 .vscode
 *.yml
 !.travis.yml
+!.github/stale.yml
