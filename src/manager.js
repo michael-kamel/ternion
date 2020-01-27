@@ -97,7 +97,8 @@ class Manager {
       socket.on("disconnect", function(reason) {
         self._emitter.emit(`${self._identifier}${namespace}`, {
           eventType: "disconnect",
-          senderId: socket.id
+          senderId: socket.id,
+          reason
         });
       });
     });

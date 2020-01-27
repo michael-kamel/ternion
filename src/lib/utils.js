@@ -11,7 +11,9 @@ function asyncSomeConcurrent(arr, func) {
   return new Promise((resolve, reject) => {
     Promise.all(
       arr.map(element =>
-        Promise.resolve(func(arr[element])).then(val => val && resolve())
+        Promise.resolve(func(arr[element]))
+          .then(val => val && resolve())
+          .catch(reject)
       )
     ).then(resolve);
   });

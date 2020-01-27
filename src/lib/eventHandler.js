@@ -129,14 +129,10 @@ class EventHandler {
     }
     try {
       const preValidationResult = await this._preValidate(eventName, args);
-      if (!preValidationResult) {
-        return;
-      }
+      if (!preValidationResult) return;
       await this._applyMiddlewares(eventName, args);
       const postValidationResult = await this._postValidate(eventName, args);
-      if (!postValidationResult) {
-        return;
-      }
+      if (!postValidationResult) return;
       await this._applyHandlers(eventName, args);
     } catch (err) {
       this._handleErrors(eventName, [err], args);

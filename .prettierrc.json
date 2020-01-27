@@ -1,4 +1,4 @@
 {
-    "quoteProps": "preserve",
-    "singleQuote": true
+  "quoteProps": "preserve",
+  "singleQuote": false
 }
