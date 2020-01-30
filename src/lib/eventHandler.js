@@ -26,6 +26,8 @@ class EventHandler {
       opts.ignoreUnregisteredEvents === undefined
         ? true
         : opts.ignoreUnregisteredEvents;
+    this._opts.concurrentValidate =
+      opts.concurrentValidate === undefined ? false : opts.concurrentValidate;
   }
 
   registerPreValidator(eventName, ...validators) {
@@ -75,9 +77,14 @@ class EventHandler {
   }
 
   async _validate(eventName, validators, args, failFast) {
+    const concurrentValidate = this._opts.concurrentValidate;
     let result = [];
+
     if (failFast) {
-      await utils.asyncSomeSequential(validators, async validator => {
+      const validateSequenceFunc = concurrentValidate
+        ? utils.asyncSomeConcurrent
+        : utils.asyncSomeSequential;
+      await validateSequenceFunc(validators, async validator => {
         const val = await validator.apply(validator, args);
         if (!val) {
           result = [new Errors.ValidationError(validator.msg)];

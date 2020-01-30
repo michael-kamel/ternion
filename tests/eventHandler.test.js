@@ -81,7 +81,8 @@ describe("event Handler Tests", () => {
         preFailFast: false,
         postFailFast: false,
         unknownActionMsg: "test",
-        ignoreUnregisteredEvents: false
+        ignoreUnregisteredEvents: false,
+        concurrentValidate: false
       };
       handler.setOpts(opts);
       expect(handler._opts).toStrictEqual(opts);
