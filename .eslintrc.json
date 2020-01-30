@@ -29,7 +29,8 @@
         "lines-between-class-members": ["warn", "always"],
         "max-len": ["error", { "ignoreComments": true, "ignoreStrings": true }],
         "max-depth": ["error", 2],
-        "space-before-function-paren": ["error", "never"]
+        "space-before-function-paren": ["error", "never"],
+        "prefer-const": ["error", { "destructuring": "all" }]
     },
     "overrides": [
         {
